@@ -11,6 +11,7 @@ import { UsersModule } from '../users/users.module'
 import { UsersRepository } from '../users/users.repository'
 import { TokensService } from './tokens.service'
 import { LocalStrategy } from './strategies/local.strategy'
+import { JwtStrategy } from './strategies/jwt.strategy'
 
 // Configuration for Auth
 const config: IConfigAttributes = getConfig()
@@ -34,6 +35,7 @@ const config: IConfigAttributes = getConfig()
 		AuthService,
 		UsersRepository,
 		LocalStrategy,
+		JwtStrategy,
 		RefreshTokensRepository,
 		TokensService
 	]

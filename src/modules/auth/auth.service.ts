@@ -57,7 +57,7 @@ export class AuthService {
 
 		// Generate new access token and refresh token
 		const accessToken = await this.tokensService.generateAccessToken(user)
-		const refreshToken = await this.tokensService.generateRefreshToken(user, 60 * 60 * 24 * 30)
+		const refreshToken = await this.tokensService.generateRefreshToken(user, 7 * 24 * 60 * 60 * 1000)
 
 		return { accessToken, refreshToken }
 	}

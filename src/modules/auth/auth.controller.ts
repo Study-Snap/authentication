@@ -1,12 +1,15 @@
-import { Body, Controller, Post, Request } from '@nestjs/common'
+import { Body, Controller, Get, Post, Request } from '@nestjs/common'
+import { JwtAuth } from 'src/decorators/jwt-auth.decorator'
 import { LocalAuth } from 'src/decorators/local-auth.decorator'
 import { User } from '../users/models/user.model'
 import { AuthService } from './auth.service'
+import { TokenRefreshDto } from './dto/token-refresh.dto'
 import { UserCreateDto } from './dto/user-create.dto'
+import { TokensService } from './tokens.service'
 
 @Controller('auth')
 export class AuthController {
-	constructor(private readonly authService: AuthService) {}
+	constructor(private readonly authService: AuthService, private readonly tokensService: TokensService) {}
 
 	@LocalAuth()
 	@Post('login')
@@ -22,5 +25,27 @@ export class AuthController {
 			email: userDto.email,
 			password: userDto.password
 		})
+	}
+
+	@Post('refresh')
+	async refresh(
+		@Body() data: TokenRefreshDto
+	): Promise<{ message: string; accessToken: string; refreshToken: string }> {
+		const { accessToken, refreshToken } = await this.tokensService.createAccessTokenFromRefreshToken(data.refreshToken)
+
+		// TODO: Grab refresh token from httpOnly cookie instead of from request body
+
+		return {
+			message: 'success',
+			accessToken,
+			refreshToken
+		}
+	}
+
+	//TODO: Remove this test endpoint when authentication implementation is complete
+	@JwtAuth()
+	@Get('test')
+	async testEndpoint(@Request() req, @Body() data: any) {
+		return req.user
 	}
 }

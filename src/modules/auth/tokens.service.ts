@@ -37,7 +37,8 @@ export class TokensService {
 		const opts: JwtSignOptions = {
 			secret: config.jwtSecret,
 			subject: String(user._id),
-			jwtid: String(token._id)
+			jwtid: String(token._id),
+			expiresIn
 		}
 
 		return this.jwtService.sign({}, opts)
@@ -110,11 +111,18 @@ export class TokensService {
 		return res
 	}
 
-	async createAccessTokenFromRefreshToken(token: string): Promise<{ accessToken: string; user: User }> {
-		const { user } = await this.resolveRefreshToken(token)
-
+	async createAccessTokenFromRefreshToken(
+		encodedToken: string
+	): Promise<{ accessToken: string; user: User; refreshToken: string }> {
+		const { user, token } = await this.resolveRefreshToken(encodedToken)
 		const accessToken = await this.generateAccessToken(user)
+		const refreshToken = await this.generateRefreshToken(user, 7 * 24 * 60 * 60 * 1000)
 
-		return { user, accessToken }
+		// Destroy the old token
+		if (token) {
+			await token.destroy()
+		}
+
+		return { user, accessToken, refreshToken }
 	}
 }
