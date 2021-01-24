@@ -4,10 +4,10 @@ import { getConfig } from 'src/config'
 import { TokenExpiredError } from 'jsonwebtoken'
 import { IConfigAttributes } from 'src/interfaces/config/app-config.interface'
 import { IRefreshTokenPayload } from 'src/interfaces/token/refresh-token.interface'
-import { RefreshToken } from '../refresh-tokens/models/refresh-token.model'
-import { RefreshTokensRepository } from '../refresh-tokens/refresh-tokens.repository'
-import { User } from '../users/models/user.model'
-import { UsersRepository } from '../users/users.repository'
+import { RefreshToken } from '../../refresh-tokens/models/refresh-token.model'
+import { RefreshTokensRepository } from '../../refresh-tokens/refresh-tokens.repository'
+import { User } from '../../users/models/user.model'
+import { UsersRepository } from '../../users/users.repository'
 
 // Get some jwt config information
 const config: IConfigAttributes = getConfig()

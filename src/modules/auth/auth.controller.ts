@@ -2,12 +2,12 @@ import { Body, Controller, Get, Post, Request } from '@nestjs/common'
 import { JwtAuth } from 'src/decorators/jwt-auth.decorator'
 import { LocalAuth } from 'src/decorators/local-auth.decorator'
 import { User } from '../users/models/user.model'
-import { AuthService } from './auth.service'
+import { AuthService } from './services/auth.service'
 import { TokenRefreshDto } from './dto/token-refresh.dto'
 import { UserCreateDto } from './dto/user-create.dto'
-import { TokensService } from './tokens.service'
+import { TokensService } from './services/tokens.service'
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
 	constructor(private readonly authService: AuthService, private readonly tokensService: TokensService) {}
 
