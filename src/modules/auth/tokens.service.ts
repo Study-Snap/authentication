@@ -88,6 +88,10 @@ export class TokensService {
 		}
 	}
 
+	async getStoredRefreshTokenWithUser(id: number): Promise<RefreshToken | undefined> {
+		return this.refreshTokensRepository.findTokenByUserId(id)
+	}
+
 	async invalidateRefreshToken(encoded: string): Promise<RefreshToken> {
 		const { token } = await this.resolveRefreshToken(encoded)
 

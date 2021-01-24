@@ -1,5 +1,5 @@
 import { Model } from 'sequelize'
-import { AutoIncrement, Column, DataType, IsEmail, NotNull, PrimaryKey, Table, Unique } from 'sequelize-typescript'
+import { AllowNull, AutoIncrement, Column, DataType, IsEmail, PrimaryKey, Table, Unique } from 'sequelize-typescript'
 
 @Table({ tableName: 'users', underscored: true })
 export class User extends Model<User> {
@@ -10,19 +10,19 @@ export class User extends Model<User> {
 
 	@Unique
 	@IsEmail
-	@NotNull
+	@AllowNull(false)
 	@Column(DataType.STRING)
 	email: string
 
-	@NotNull
+	@AllowNull(false)
 	@Column(DataType.STRING)
 	password: string
 
-	@NotNull
+	@AllowNull(false)
 	@Column(DataType.STRING)
 	firstName: string
 
-	@NotNull
+	@AllowNull(false)
 	@Column(DataType.STRING)
 	lastName: string
 

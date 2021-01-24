@@ -1,5 +1,5 @@
 import { Model } from 'sequelize'
-import { AutoIncrement, Column, DataType, NotNull, PrimaryKey, Table } from 'sequelize-typescript'
+import { AllowNull, AutoIncrement, Column, DataType, NotNull, PrimaryKey, Table } from 'sequelize-typescript'
 
 @Table({ tableName: 'refresh_tokens', underscored: true })
 export class RefreshToken extends Model<RefreshToken> {
@@ -8,15 +8,15 @@ export class RefreshToken extends Model<RefreshToken> {
 	@Column(DataType.INTEGER)
 	_id: number
 
-	@NotNull
+	@AllowNull(false)
 	@Column(DataType.INTEGER)
 	userId: number
 
-	@NotNull
+	@AllowNull(false)
 	@Column(DataType.BOOLEAN)
 	isRevoked: boolean
 
-	@NotNull
+	@AllowNull(false)
 	@Column(DataType.DATE)
 	expires: Date
 }

@@ -20,6 +20,14 @@ export class UsersRepository {
 		})
 	}
 
+	async findUserByEmailForAuth(email: string): Promise<User | undefined> {
+		return this.userModel.findOne({
+			where: {
+				email
+			}
+		})
+	}
+
 	async findUserById(id: number): Promise<User | undefined> {
 		return this.userModel.findOne({
 			where: {

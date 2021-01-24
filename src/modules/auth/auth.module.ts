@@ -1,4 +1,5 @@
-import { AuthController } from './../auth.controller'
+import { AuthService } from './auth.service'
+import { AuthController } from './auth.controller'
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
@@ -9,6 +10,7 @@ import { RefreshTokensRepository } from '../refresh-tokens/refresh-tokens.reposi
 import { UsersModule } from '../users/users.module'
 import { UsersRepository } from '../users/users.repository'
 import { TokensService } from './tokens.service'
+import { LocalStrategy } from './strategies/local.strategy'
 
 // Configuration for Auth
 const config: IConfigAttributes = getConfig()
@@ -29,7 +31,9 @@ const config: IConfigAttributes = getConfig()
 		AuthController
 	],
 	providers: [
+		AuthService,
 		UsersRepository,
+		LocalStrategy,
 		RefreshTokensRepository,
 		TokensService
 	]

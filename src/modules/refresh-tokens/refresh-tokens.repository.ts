@@ -34,6 +34,14 @@ export class RefreshTokensRepository {
 		})
 	}
 
+	async findTokenByUserId(id: number): Promise<RefreshToken | undefined> {
+		return this.refreshTokenModel.findOne({
+			where: {
+				userId: id
+			}
+		})
+	}
+
 	async invalidateRefreshToken(token: RefreshToken): Promise<RefreshToken | undefined> {
 		return token.update({
 			isRevoked: true
