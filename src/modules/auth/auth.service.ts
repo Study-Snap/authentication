@@ -49,12 +49,6 @@ export class AuthService {
 			throw new UnprocessableEntityException({ message: 'User object is malformed' })
 		}
 
-		const existingToken = await this.tokensService.getStoredRefreshTokenWithUser(user._id)
-
-		if (existingToken) {
-			await existingToken.destroy()
-		}
-
 		// Generate new access token and refresh token
 		const accessToken = await this.tokensService.generateAccessToken(user)
 		const refreshToken = await this.tokensService.generateRefreshToken(user, 7 * 24 * 60 * 60 * 1000)

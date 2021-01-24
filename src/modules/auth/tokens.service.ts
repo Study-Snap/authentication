@@ -33,6 +33,12 @@ export class TokensService {
 	async generateRefreshToken(user: User, expiresIn: number): Promise<string> {
 		const token = await this.refreshTokensRepository.createRefreshToken(user, expiresIn)
 
+		// Remove any existing refresh token whenever we generate a new one (to limit potential for token compromise)
+		const existingToken = await this.getStoredRefreshTokenWithUser(user._id)
+		if (existingToken) {
+			await existingToken.destroy()
+		}
+
 		// Override default Sign Options with Refresh token specific options
 		const opts: JwtSignOptions = {
 			secret: config.jwtSecret,
@@ -114,14 +120,9 @@ export class TokensService {
 	async createAccessTokenFromRefreshToken(
 		encodedToken: string
 	): Promise<{ accessToken: string; user: User; refreshToken: string }> {
-		const { user, token } = await this.resolveRefreshToken(encodedToken)
+		const { user } = await this.resolveRefreshToken(encodedToken)
 		const accessToken = await this.generateAccessToken(user)
 		const refreshToken = await this.generateRefreshToken(user, 7 * 24 * 60 * 60 * 1000)
-
-		// Destroy the old token
-		if (token) {
-			await token.destroy()
-		}
 
 		return { user, accessToken, refreshToken }
 	}
