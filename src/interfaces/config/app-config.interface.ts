@@ -11,7 +11,6 @@ export interface IConfigAttributes {
 	dbRetryAttempts: number | string
 	jwtSecret: string
 	jwtAccessExpireTime: string
-	jwtRefreshExpireTime: string
 }
 
 export interface IConfig {
