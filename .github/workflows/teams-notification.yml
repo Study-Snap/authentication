@@ -1,0 +1,16 @@
+name: Send Notification to Teams
+
+on:
+  pull_request:
+
+jobs:
+  pull-request-info:
+    name: Send information about this pull request
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Send notification using webhook
+        uses: skitionek/notify-microsoft-teams@master
+        if: always()
+        with:
+          webhook_url: ${{ secrets.MSTEAMS_PR_WEBHOOK }}
