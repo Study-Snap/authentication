@@ -1,5 +1,5 @@
 import { Model } from 'sequelize'
-import { AllowNull, AutoIncrement, Column, DataType, NotNull, PrimaryKey, Table } from 'sequelize-typescript'
+import { AllowNull, AutoIncrement, Column, DataType, PrimaryKey, Table } from 'sequelize-typescript'
 
 @Table({ tableName: 'refresh_tokens', underscored: true })
 export class RefreshToken extends Model<RefreshToken> {

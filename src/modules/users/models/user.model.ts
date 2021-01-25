@@ -27,6 +27,6 @@ export class User extends Model<User> {
 	lastName: string
 
 	/**
-   * Note: updated_at, created_at fields are automatically generated
-   */
+	 * Note: updated_at, created_at fields are automatically generated
+	 */
 }

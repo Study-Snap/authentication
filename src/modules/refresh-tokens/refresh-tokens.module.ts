@@ -4,17 +4,9 @@ import { SequelizeModule } from '@nestjs/sequelize'
 import { RefreshToken } from './models/refresh-token.model'
 
 @Module({
-	imports: [
-		SequelizeModule.forFeature([
-			RefreshToken
-		])
-	],
+	imports: [SequelizeModule.forFeature([RefreshToken])],
 	controllers: [],
-	providers: [
-		RefreshTokensRepository
-	],
-	exports: [
-		SequelizeModule
-	]
+	providers: [RefreshTokensRepository],
+	exports: [SequelizeModule]
 })
 export class RefreshTokensModule {}
