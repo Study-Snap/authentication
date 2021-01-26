@@ -14,3 +14,7 @@ jobs:
         if: always()
         with:
           webhook_url: ${{ secrets.MSTEAMS_PR_WEBHOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
+          overwrite: "{ title: `A new pull request is available` }"
