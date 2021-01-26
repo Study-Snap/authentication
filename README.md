@@ -6,6 +6,9 @@
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
 ![Build and Push Docker](https://github.com/studysnap/authentication/workflows/Build%20and%20Push%20Docker/badge.svg)
+![Lint and Scan Docker](https://github.com/studysnap/authentication/workflows/Lint%20and%20Scan%20Docker/badge.svg)
+![CodeQL Security Check](https://github.com/studysnap/authentication/workflows/CodeQL%20Security%20Check/badge.svg)
+![Source Tests](https://github.com/studysnap/authentication/workflows/Test%20and%20Lint%20Source/badge.svg)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/studysnap/authentication.svg)](https://github.com/studysnap/authentication/pulls)
 [![License](https://img.shields.io/badge/license-Apache2.0-blue.svg)](/LICENSE)
 
