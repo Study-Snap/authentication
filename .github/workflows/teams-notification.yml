@@ -1,4 +1,4 @@
-name: Send Notification to Teams
+name: Notify Teams of new PR
 
 on:
   pull_request:
