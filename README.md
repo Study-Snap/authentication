@@ -2,11 +2,19 @@
   <a href="#" target="blank"><img src="./.github/docs/media/studysnap.png" width="320" alt="StudySnap Logo" /></a>
 </p>
 
-  <p align="center">Authentication Backend for the StudySnap application</p>
-    <p align="center">
+<div align="center">
+
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+![Build and Push Docker](https://github.com/studysnap/authentication/workflows/Build%20and%20Push%20Docker/badge.svg)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/studysnap/authentication.svg)](https://github.com/studysnap/authentication/pulls)
+[![License](https://img.shields.io/badge/license-Apache2.0-blue.svg)](/LICENSE)
+
+</div>
 
 ---
 
+<p align="center">Authentication Backend for the StudySnap application</p>
+    <p align="center">
 
 ## Description
 
@@ -41,13 +49,6 @@ Below is a list of available configuration options to customize the project. **N
 
 > The current dev environment setup I have convieniently included in the `.env` file at the root of this project.
 
-## Installation
-
-Install the required project dependencies
-
-```bash
-$ npm install
-```
 
 ## Running the app
 
@@ -68,6 +69,14 @@ docker run -d -p 5555:5555 <other_options> local/studysnap-authentication:latest
 ```
 
 ### Standalone / Development
+
+Install the required project dependencies
+
+```bash
+$ npm install
+```
+
+Run the project
 
 ```bash
 # development
