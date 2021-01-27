@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
-import { PASSWORD_FIELD } from 'src/constants'
+import { PASSWORD_FIELD } from '../../constants/index'
 import { User } from './models/user.model'
 
 @Injectable()
@@ -44,7 +44,7 @@ export class UsersRepository {
 				email,
 				password
 			})
-			.catch((err) => {
+			.catch(() => {
 				throw new BadRequestException({ message: `Problem registering this user in the database...` })
 			})
 
