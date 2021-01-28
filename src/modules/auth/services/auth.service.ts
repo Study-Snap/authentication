@@ -1,11 +1,9 @@
 import { Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
 import { User } from '../../users/models/user.model'
 import { UsersRepository } from '../../users/users.repository'
 import * as bcrypt from 'bcrypt'
-import { IConfigAttributes } from 'src/interfaces/config/app-config.interface'
-import { getConfig } from 'src/config'
-import { InjectModel } from '@nestjs/sequelize'
+import { IConfigAttributes } from '../../../interfaces/config/app-config.interface'
+import { getConfig } from '../../../config'
 import { TokensService } from './tokens.service'
 
 const config: IConfigAttributes = getConfig()

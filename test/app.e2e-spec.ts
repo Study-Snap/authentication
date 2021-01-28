@@ -1,24 +1,38 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { Test, TestingModule } from '@nestjs/testing'
+import * as request from 'supertest'
+import { testUsers } from './data/user.data'
+import { AppModule } from './../src/app.module'
+import { NestExpressApplication } from '@nestjs/platform-express'
+import { Sequelize } from 'sequelize'
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication;
+let app: NestExpressApplication
+let connection: Sequelize
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+// Setup test database
+beforeAll(async () => {
+	const moduleRef: TestingModule = await Test.createTestingModule({
+		imports: [
+			AppModule
+		]
+	}).compile()
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
+	app = moduleRef.createNestApplication<NestExpressApplication>()
+	await app.init()
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
-  });
-});
+	// Get Database connection
+
+	// Drop any existing test database
+
+	// Create (if not exists) a test database
+
+	// Load some test data by using raw INSERT query
+
+	// Close connection
+})
+
+// TODO: Remove this placeholder test
+describe('AUTH', () => {
+	it('should be 1 + 1', () => {
+		expect(1 + 1).toEqual(2)
+	})
+})

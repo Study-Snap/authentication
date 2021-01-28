@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
-import { getConfig } from 'src/config'
-import { JWT_STRATEGY } from 'src/constants'
-import { IConfigAttributes } from 'src/interfaces/config/app-config.interface'
+import { getConfig } from '../../../config'
+import { JWT_STRATEGY } from '../../../constants'
+import { IConfigAttributes } from '../../../interfaces/config/app-config.interface'
 
 const config: IConfigAttributes = getConfig()
 

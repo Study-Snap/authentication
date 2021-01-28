@@ -1,4 +1,3 @@
-import { TokensService } from './modules/auth/services/tokens.service'
 import { RefreshTokensModule } from './modules/refresh-tokens/refresh-tokens.module'
 import { UsersModule } from './modules/users/users.module'
 import { AuthModule } from './modules/auth/auth.module'
