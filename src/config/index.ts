@@ -16,7 +16,7 @@ const appConfig: IConfig = {
 		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_db',
 		dbRetryAttempts: process.env.DB_RETRY_ATTEMPTS || 2,
 		jwtSecret: process.env.JWT_SECRET || 'dev_secret_do_change_in_prod',
-		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '10m'
+		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '20s'
 	},
 	test: {
 		listenPort: process.env.PORT || 5555,
@@ -30,7 +30,7 @@ const appConfig: IConfig = {
 		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_testdb',
 		dbRetryAttempts: process.env.DB_RETRY_ATTEMPTS || 2,
 		jwtSecret: process.env.JWT_SECRET || 'test_secret',
-		jwtAccessExpireTime: '10m'
+		jwtAccessExpireTime: '10h'
 	},
 	production: {
 		listenPort: process.env.PORT || 5555,

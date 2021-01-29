@@ -16,6 +16,10 @@ describe('Authentication', () => {
 	let app: INestApplication
 	let connection: Sequelize
 
+	// For use in testing protected endpoints
+	let jwtToken: string
+	let refreshToken: string
+
 	// Setup test database
 	beforeEach(async () => {
 		const testModule: TestingModule = await Test.createTestingModule({
@@ -86,9 +90,6 @@ describe('Authentication', () => {
 				expect(res.status).toBe(HttpStatus.CREATED)
 				expect(body.firstName).toBe(data.firstName)
 				expect(body.email).toBe(data.email)
-
-				// Return the response so that listening server can be closed
-				return res
 			})
 			it('should fail to register existing user', async () => {
 				const data = testUsers[0]
@@ -150,6 +151,51 @@ describe('Authentication', () => {
 				expect(res.status).toBe(HttpStatus.CREATED)
 				expect(body.accessToken).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
 				expect(body.refreshToken).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
+
+				// Set access & refresh tokens for use in subsequent tests
+				jwtToken = body.accessToken
+				refreshToken = body.refreshToken
+			})
+		})
+
+		describe('Protected Resources and Refreshing Tokens', () => {
+			const API_TEST_ENDPOINT = '/api/auth/test'
+			const API_REFRESH_ENDPOINT = '/api/auth/refresh'
+
+			it('should prevent access with an invalid access token', async () => {
+				const res = await request(app.getHttpServer()).get(API_TEST_ENDPOINT).set('Authorization', `Bearer FAKE_TOKEN`)
+
+				const body = res.body
+				expect(res.status).toBe(HttpStatus.UNAUTHORIZED)
+				expect(body.message).toMatch('Unauthorized')
+			})
+			it('should allow access with valid access token', async () => {
+				const res = await request(app.getHttpServer()).get(API_TEST_ENDPOINT).set('Authorization', `Bearer ${jwtToken}`)
+
+				const body = res.body
+				expect(res.status).toBe(HttpStatus.OK)
+				expect(body.id).toBeDefined()
+				expect(body.email).toBeDefined()
+			})
+			it('should provide new access & refresh tokens by using a valid refresh token', async () => {
+				const res = await request(app.getHttpServer()).post(API_REFRESH_ENDPOINT).send({
+					refreshToken: refreshToken
+				})
+
+				const body = res.body
+				console.log(body)
+				expect(res.status).toBe(HttpStatus.CREATED)
+				expect(body.accessToken).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
+				expect(body.refreshToken).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
+			})
+			it('should prevent refresh of tokens with invalid refresh token', async () => {
+				const res = await request(app.getHttpServer()).post(API_REFRESH_ENDPOINT).send({
+					refreshToken: 'FAKE_TOKEN'
+				})
+
+				const body = res.body
+				expect(res.status).toBe(HttpStatus.UNPROCESSABLE_ENTITY)
+				expect(body.message).toMatch('Malformed refresh token' || 'Revoked' || 'could not be found')
 			})
 		})
 	})
