@@ -25,7 +25,7 @@ const config: IConfigAttributes = getConfig()
 			retryAttempts: config.dbRetryAttempts as number,
 			autoLoadModels: true,
 			synchronize: true,
-			models: []
+			logging: false
 		})
 	],
 	controllers: [],

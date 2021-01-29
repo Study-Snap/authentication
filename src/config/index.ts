@@ -20,17 +20,17 @@ const appConfig: IConfig = {
 	},
 	test: {
 		listenPort: process.env.PORT || 5555,
-		maxRequests: 250,
+		maxRequests: 999,
 		bcryptSaltRounds: process.env.BCRYPT_SALT_ROUNDS || 12,
 		dbDialect: process.env.DB_DIALECT || 'postgres',
 		dbHost: process.env.DB_HOST || 'localhost',
-		dbPort: process.env.DB_PORT || 5432,
+		dbPort: process.env.DB_PORT || 7654,
 		dbUsername: process.env.DB_USER,
 		dbPassword: process.env.DB_PASS,
-		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_db',
+		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_testdb',
 		dbRetryAttempts: process.env.DB_RETRY_ATTEMPTS || 2,
-		jwtSecret: process.env.JWT_SECRET || 'dev_secret_do_change_in_prod',
-		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '10m'
+		jwtSecret: process.env.JWT_SECRET || 'test_secret',
+		jwtAccessExpireTime: '10m'
 	},
 	production: {
 		listenPort: process.env.PORT || 5555,
