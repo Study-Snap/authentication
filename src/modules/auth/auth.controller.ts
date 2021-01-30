@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Request } from '@nestjs/common'
-import { JwtAuth } from 'src/decorators/jwt-auth.decorator'
-import { LocalAuth } from 'src/decorators/local-auth.decorator'
+import { JwtAuth } from '../../decorators/jwt-auth.decorator'
+import { LocalAuth } from '../../decorators/local-auth.decorator'
 import { User } from '../users/models/user.model'
 import { AuthService } from './services/auth.service'
 import { TokenRefreshDto } from './dto/token-refresh.dto'

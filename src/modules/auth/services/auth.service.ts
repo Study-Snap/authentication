@@ -1,9 +1,9 @@
-import { Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common'
+import { ConflictException, Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common'
 import { User } from '../../users/models/user.model'
 import { UsersRepository } from '../../users/users.repository'
 import * as bcrypt from 'bcrypt'
-import { IConfigAttributes } from 'src/interfaces/config/app-config.interface'
-import { getConfig } from 'src/config'
+import { IConfigAttributes } from '../../../interfaces/config/app-config.interface'
+import { getConfig } from '../../../config'
 import { TokensService } from './tokens.service'
 
 const config: IConfigAttributes = getConfig()
@@ -15,11 +15,10 @@ export class AuthService {
 	async register({ firstName, lastName, email, password }): Promise<User> {
 		const user = await this.usersRepository.findUserByEmail(email)
 
-		if (user)
-			throw new UnauthorizedException({
-				message: 'A user with that email already exists'
-			})
+    // Verify user does not already exist
+		if (user) throw new ConflictException({ message: 'A user with that email already exists' })
 
+    // Hash password for storage
 		const hashedPassword = await bcrypt.hash(password, config.bcryptSaltRounds)
 		password = hashedPassword
 		return this.usersRepository.createUser({

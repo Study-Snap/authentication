@@ -1,5 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
+import { getConfig } from '../../config'
+import { IConfigAttributes } from '../../interfaces/config/app-config.interface'
 import { User } from '../users/models/user.model'
 import { RefreshToken } from './models/refresh-token.model'
 
@@ -7,7 +9,7 @@ import { RefreshToken } from './models/refresh-token.model'
 export class RefreshTokensRepository {
 	constructor(@InjectModel(RefreshToken) private refreshTokenModel: typeof RefreshToken) {}
 
-	async createRefreshToken(user: User, ttl: number): Promise<RefreshToken | undefined> {
+	async createRefreshToken(user: User | { _id: number }, ttl: number): Promise<RefreshToken | undefined> {
 		// Get expiration date
 		const expiration = new Date()
 		expiration.setTime(expiration.getTime() + ttl)

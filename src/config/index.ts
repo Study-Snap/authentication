@@ -1,5 +1,5 @@
-import { DEVELOPMENT, PRODUCTION, TEST } from 'src/constants'
-import { IConfig } from 'src/interfaces/config/app-config.interface'
+import { DEVELOPMENT, PRODUCTION, TEST } from '../constants'
+import { IConfig } from '../interfaces/config/app-config.interface'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
@@ -16,21 +16,21 @@ const appConfig: IConfig = {
 		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_db',
 		dbRetryAttempts: process.env.DB_RETRY_ATTEMPTS || 2,
 		jwtSecret: process.env.JWT_SECRET || 'dev_secret_do_change_in_prod',
-		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '10m'
+		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '20s'
 	},
 	test: {
 		listenPort: process.env.PORT || 5555,
-		maxRequests: parseInt(process.env.MAX_REQUESTS) || 250,
+		maxRequests: 999,
 		bcryptSaltRounds: process.env.BCRYPT_SALT_ROUNDS || 12,
 		dbDialect: process.env.DB_DIALECT || 'postgres',
 		dbHost: process.env.DB_HOST || 'localhost',
-		dbPort: process.env.DB_PORT || 5432,
+		dbPort: process.env.DB_PORT || 7654,
 		dbUsername: process.env.DB_USER,
 		dbPassword: process.env.DB_PASS,
-		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_db',
+		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_testdb',
 		dbRetryAttempts: process.env.DB_RETRY_ATTEMPTS || 2,
-		jwtSecret: process.env.JWT_SECRET || 'dev_secret_do_change_in_prod',
-		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '10m'
+		jwtSecret: process.env.JWT_SECRET || 'test_secret',
+		jwtAccessExpireTime: '10h'
 	},
 	production: {
 		listenPort: process.env.PORT || 5555,
