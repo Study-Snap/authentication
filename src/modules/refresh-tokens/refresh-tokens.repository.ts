@@ -1,7 +1,5 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
-import { getConfig } from '../../config'
-import { IConfigAttributes } from '../../interfaces/config/app-config.interface'
 import { User } from '../users/models/user.model'
 import { RefreshToken } from './models/refresh-token.model'
 

@@ -18,7 +18,7 @@ export const userModelMockFactory: () => MockType<Model<any>> = jest.fn(() => ({
 				password: 'password'
 			}
 	}),
-	create: async () => jest.fn((data) => '')
+	create: async () => jest.fn(() => '')
 }))
 
 // @ts-ignore
