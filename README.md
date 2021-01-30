@@ -27,8 +27,8 @@ The authentication backend for StudySnap created using the [NestJS](http://nestj
 
 This project has a few extra requirements in order to function properly.
 
-- Connection to an existing(or new) PostgreSQL database. This is where we would like to store users and active refresh tokens.
-- **Preferrably** [Docker](http://docker.com) and/or [docker-compose](https://docs.docker.com/compose/)
+- Connection to an existing(or new) PostgreSQL database (configured through docker). This is where we would like to store users and active refresh tokens.
+- **Preferrably** [Docker](http://docker.com) and/or [docker-compose](https://docs.docker.com/compose/). Note: Can be run without docker.
 - Configured `.env` or `exported` environment variables according to the available configurations listed below.
 
 ## Available Configurations
@@ -52,10 +52,27 @@ Below is a list of available configuration options to customize the project. **N
 
 > The current dev environment setup I have convieniently included in the `.env` file at the root of this project.
 
-
 ## Running the app
 
 You can choose to run this project in multiple ways depending on what you need.
+
+### Extra Steps
+
+Currently there is one additional setup command you will need to run before running the app in Docker or Standalone. You must have postgreSQL installed and configured properly (as per **prerequisites** above). Do this with Docker (**recommended**).
+
+```bash
+
+# Usable with default configuration
+$ docker run -d \
+    -e POSTGRES_DB=studysnap_db \
+    -e POSTGRES_USER=studysnap \
+    -e POSTGRES_PASSWORD=snapstudy \
+    -p 5432:5432 \
+    postgres:13.1
+
+```
+
+> Make sure that you change the passed environment variables if your needs change.
 
 ### Docker (recommended)
 
@@ -63,11 +80,11 @@ From the project root, run the following.
 
 ```bash
 # Run from published image
-docker run -d -p 5555:5555 <other_options> studysnap/authentication:<version_tag>
+$ docker run -d -p 5555:5555 <other_options> studysnap/authentication:<version_tag>
 
 # Build & Run Locally
-docker build -t local/studysnap-authentication:latest .
-docker run -d -p 5555:5555 <other_options> local/studysnap-authentication:latest
+$ docker build -t local/studysnap-authentication:latest .
+$ docker run -d -p 5555:5555 <other_options> local/studysnap-authentication:latest
 
 ```
 

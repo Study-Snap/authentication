@@ -1,7 +1,7 @@
 FROM node:15.5.0-alpine3.11
 
 LABEL maintainer="Ben Sykes"
-LABEL authros="Ben Sykes, Liam Stickney, Malik Sheharyaar Talhat"
+LABEL authors="Ben Sykes, Liam Stickney, Malik Sheharyaar Talhat"
 
 # Configure environment (Note: Tini allows us to avoid several Docker edge cases, see https://github.com/krallin/tini.)
 RUN apk add --no-cache tini bind-tools

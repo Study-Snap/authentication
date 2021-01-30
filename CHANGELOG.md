@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (auto-cicd): Github workflows to help automate lint, test, build and publishing of this application
 - (local-auth): Local authentication that generates JWT Access & Refresh tokens for stateless authentication
 - (auto-test): Unit and End-to-End (e2e) testing captured in CI process.
+- (docs): Instructions for running without docker in development
 
 ### Modified
 
