@@ -183,7 +183,6 @@ describe('Authentication', () => {
 				})
 
 				const body = res.body
-				console.log(body)
 				expect(res.status).toBe(HttpStatus.CREATED)
 				expect(body.accessToken).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
 				expect(body.refreshToken).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
