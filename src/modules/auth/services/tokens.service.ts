@@ -34,7 +34,7 @@ export class TokensService {
 		// Remove any existing refresh token whenever we generate a new one (to limit potential for token compromise)
 		const existingToken = await this.getStoredRefreshTokenWithUser(user._id)
 		if (existingToken) {
-			await existingToken.destroy()
+			await this.refreshTokensRepository.removeRefreshToken(existingToken)
 		}
 
 		// Create the new refresh token

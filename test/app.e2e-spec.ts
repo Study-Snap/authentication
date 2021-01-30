@@ -21,7 +21,7 @@ describe('Authentication', () => {
 	let refreshToken: string
 
 	// Setup test database
-	beforeEach(async () => {
+	beforeAll(async () => {
 		const testModule: TestingModule = await Test.createTestingModule({
 			imports: [
 				AppModule
@@ -199,7 +199,7 @@ describe('Authentication', () => {
 		})
 	})
 
-	afterEach(async () => {
+	afterAll(async () => {
 		// Close server
 		await app.close()
 
