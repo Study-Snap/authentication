@@ -1,10 +1,10 @@
 {
   "name": "authentication",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "0.1.0",
+  "description": "The authentication/authorization server implementation using NestJS",
+  "author": "Ben Sykes",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

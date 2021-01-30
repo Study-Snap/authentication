@@ -13,9 +13,7 @@ export class UsersRepository {
 				email
 			},
 			attributes: {
-				exclude: [
-					PASSWORD_FIELD
-				]
+				exclude: [PASSWORD_FIELD]
 			}
 		})
 	}
@@ -37,19 +35,23 @@ export class UsersRepository {
 	}
 
 	async createUser({ firstName, lastName, email, password }): Promise<User> {
-		let response = await this.userModel
+		const response = await this.userModel
 			.create({
 				firstName,
 				lastName,
 				email,
 				password
 			})
-			.catch((err) => {
-				throw new BadRequestException({ message: `Problem registering this user in the database...` })
+			.catch(() => {
+				throw new BadRequestException({
+					message: `Problem registering this user in the database...`
+				})
 			})
 
 		if (!response) {
-			throw new InternalServerErrorException({ message: `An unknown error occurred when trying to register...` })
+			throw new InternalServerErrorException({
+				message: `An unknown error occurred when trying to register...`
+			})
 		}
 
 		return this.findUserByEmail(email)

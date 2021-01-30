@@ -1,11 +1,9 @@
 import { Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
 import { User } from '../../users/models/user.model'
 import { UsersRepository } from '../../users/users.repository'
 import * as bcrypt from 'bcrypt'
 import { IConfigAttributes } from 'src/interfaces/config/app-config.interface'
 import { getConfig } from 'src/config'
-import { InjectModel } from '@nestjs/sequelize'
 import { TokensService } from './tokens.service'
 
 const config: IConfigAttributes = getConfig()
@@ -17,7 +15,10 @@ export class AuthService {
 	async register({ firstName, lastName, email, password }): Promise<User> {
 		const user = await this.usersRepository.findUserByEmail(email)
 
-		if (user) throw new UnauthorizedException({ message: 'A user with that email already exists' })
+		if (user)
+			throw new UnauthorizedException({
+				message: 'A user with that email already exists'
+			})
 
 		const hashedPassword = await bcrypt.hash(password, config.bcryptSaltRounds)
 		password = hashedPassword
@@ -38,7 +39,9 @@ export class AuthService {
 
 		const response = await bcrypt.compare(password, user.password)
 		if (!response) {
-			throw new UnauthorizedException({ message: 'Incorrect email or password' })
+			throw new UnauthorizedException({
+				message: 'Incorrect email or password'
+			})
 		}
 
 		return this.usersRepository.findUserByEmail(user.email)
@@ -46,7 +49,9 @@ export class AuthService {
 
 	async getAccessAndRefreshTokens(user: User): Promise<{ accessToken: string; refreshToken: string }> {
 		if (!user) {
-			throw new UnprocessableEntityException({ message: 'User object is malformed' })
+			throw new UnprocessableEntityException({
+				message: 'User object is malformed'
+			})
 		}
 
 		// Generate new access token and refresh token
