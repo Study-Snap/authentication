@@ -15,8 +15,10 @@ export class AuthService {
 	async register({ firstName, lastName, email, password }): Promise<User> {
 		const user = await this.usersRepository.findUserByEmail(email)
 
+    // Verify user does not already exist
 		if (user) throw new ConflictException({ message: 'A user with that email already exists' })
 
+    // Hash password for storage
 		const hashedPassword = await bcrypt.hash(password, config.bcryptSaltRounds)
 		password = hashedPassword
 		return this.usersRepository.createUser({
@@ -36,7 +38,9 @@ export class AuthService {
 
 		const response = await bcrypt.compare(password, user.password)
 		if (!response) {
-			throw new UnauthorizedException({ message: 'Incorrect email or password' })
+			throw new UnauthorizedException({
+				message: 'Incorrect email or password'
+			})
 		}
 
 		return this.usersRepository.findUserByEmail(user.email)
@@ -44,7 +48,9 @@ export class AuthService {
 
 	async getAccessAndRefreshTokens(user: User): Promise<{ accessToken: string; refreshToken: string }> {
 		if (!user) {
-			throw new UnprocessableEntityException({ message: 'User object is malformed' })
+			throw new UnprocessableEntityException({
+				message: 'User object is malformed'
+			})
 		}
 
 		// Generate new access token and refresh token

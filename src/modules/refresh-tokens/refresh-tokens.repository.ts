@@ -1,11 +1,9 @@
-import { Injectable, InternalServerErrorException, UnprocessableEntityException } from '@nestjs/common'
+import { Injectable, UnprocessableEntityException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { getConfig } from '../../config'
 import { IConfigAttributes } from '../../interfaces/config/app-config.interface'
 import { User } from '../users/models/user.model'
 import { RefreshToken } from './models/refresh-token.model'
-
-const config: IConfigAttributes = getConfig()
 
 @Injectable()
 export class RefreshTokensRepository {
@@ -52,7 +50,9 @@ export class RefreshTokensRepository {
 		try {
 			await token.destroy()
 		} catch (err) {
-			throw new InternalServerErrorException({ message: 'Refresh token malformed or does not exist anymore' })
+			throw new UnprocessableEntityException({
+				message: 'Refresh token malformed or does not exist anymore'
+			})
 		}
 	}
 }

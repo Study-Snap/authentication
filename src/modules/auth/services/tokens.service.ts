@@ -31,13 +31,14 @@ export class TokensService {
 	}
 
 	async generateRefreshToken(user: User, expiresIn: number): Promise<string> {
-		const token = await this.refreshTokensRepository.createRefreshToken(user, expiresIn)
-
 		// Remove any existing refresh token whenever we generate a new one (to limit potential for token compromise)
 		const existingToken = await this.getStoredRefreshTokenWithUser(user._id)
 		if (existingToken) {
 			await existingToken.destroy()
 		}
+
+		// Create the new refresh token
+		const token = await this.refreshTokensRepository.createRefreshToken(user, expiresIn)
 
 		// Override default Sign Options with Refresh token specific options
 		const opts: JwtSignOptions = {
@@ -55,9 +56,13 @@ export class TokensService {
 			return this.jwtService.verify(token)
 		} catch (err) {
 			if (err instanceof TokenExpiredError) {
-				throw new UnprocessableEntityException({ message: 'Refresh token is expired' })
+				throw new UnprocessableEntityException({
+					message: 'Refresh token is expired'
+				})
 			}
-			throw new UnprocessableEntityException({ message: 'Malformed refresh token' })
+			throw new UnprocessableEntityException({
+				message: 'Malformed refresh token'
+			})
 		}
 	}
 
@@ -65,7 +70,9 @@ export class TokensService {
 		const tokenId = payload.jti
 
 		if (!tokenId) {
-			throw new UnprocessableEntityException({ message: 'Refresh token is malformed' })
+			throw new UnprocessableEntityException({
+				message: 'Refresh token is malformed'
+			})
 		}
 
 		return this.refreshTokensRepository.findTokenById(tokenId)
@@ -76,17 +83,23 @@ export class TokensService {
 		const token = await this.getStoredTokenFromRefreshTokenPayload(payload)
 
 		if (!token) {
-			throw new UnprocessableEntityException({ message: 'Refresh token could not be found' })
+			throw new UnprocessableEntityException({
+				message: 'Refresh token could not be found'
+			})
 		}
 
 		if (token.isRevoked) {
-			throw new UnprocessableEntityException({ message: 'Refresh token revoked' })
+			throw new UnprocessableEntityException({
+				message: 'Refresh token revoked'
+			})
 		}
 
 		const user = await this.usersRepository.findUserById(payload.sub)
 
 		if (!user) {
-			throw new UnprocessableEntityException({ message: 'Could not find a user associated with this refresh token' })
+			throw new UnprocessableEntityException({
+				message: 'Could not find a user associated with this refresh token'
+			})
 		}
 
 		return {
@@ -103,7 +116,9 @@ export class TokensService {
 		const { token } = await this.resolveRefreshToken(encoded)
 
 		if (!token) {
-			throw new UnprocessableEntityException({ message: 'Refresh token could not be found' })
+			throw new UnprocessableEntityException({
+				message: 'Refresh token could not be found'
+			})
 		}
 
 		const res = await this.refreshTokensRepository.invalidateRefreshToken(token)

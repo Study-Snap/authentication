@@ -6,7 +6,7 @@ dotenv.config()
 const appConfig: IConfig = {
 	development: {
 		listenPort: process.env.PORT || 5555,
-		maxRequests: 250,
+		maxRequests: parseInt(process.env.MAX_REQUESTS) || 250,
 		bcryptSaltRounds: process.env.BCRYPT_SALT_ROUNDS || 12,
 		dbDialect: process.env.DB_DIALECT || 'postgres',
 		dbHost: process.env.DB_HOST || 'localhost',
@@ -21,6 +21,7 @@ const appConfig: IConfig = {
 	test: {
 		listenPort: process.env.PORT || 5555,
 		maxRequests: 999,
+		maxRequests: parseInt(process.env.MAX_REQUESTS) || 250,
 		bcryptSaltRounds: process.env.BCRYPT_SALT_ROUNDS || 12,
 		dbDialect: process.env.DB_DIALECT || 'postgres',
 		dbHost: process.env.DB_HOST || 'localhost',
@@ -34,7 +35,7 @@ const appConfig: IConfig = {
 	},
 	production: {
 		listenPort: process.env.PORT || 5555,
-		maxRequests: 250,
+		maxRequests: parseInt(process.env.MAX_REQUESTS) || 250,
 		bcryptSaltRounds: process.env.BCRYPT_SALT_ROUNDS || 12,
 		dbDialect: process.env.DB_DIALECT || 'postgres',
 		dbHost: process.env.DB_HOST,

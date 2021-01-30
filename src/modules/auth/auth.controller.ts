@@ -45,7 +45,7 @@ export class AuthController {
 	//TODO: Remove this test endpoint when authentication implementation is complete
 	@JwtAuth()
 	@Get('test')
-	async testEndpoint(@Request() req, @Body() data: any) {
+	async testEndpoint(@Request() req) {
 		return req.user
 	}
 }
