@@ -1,51 +1,115 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <a href="#" target="blank"><img src="./.github/docs/media/studysnap.png" width="320" alt="StudySnap Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<div align="center">
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+![Build and Push Docker](https://github.com/studysnap/authentication/workflows/Build%20and%20Push%20Docker/badge.svg)
+![Lint and Scan Docker](https://github.com/studysnap/authentication/workflows/Lint%20and%20Scan%20Docker/badge.svg)
+![CodeQL Security Check](https://github.com/studysnap/authentication/workflows/CodeQL%20Security%20Check/badge.svg)
+![Source Tests](https://github.com/studysnap/authentication/workflows/Test%20and%20Lint%20Source/badge.svg)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/studysnap/authentication.svg)](https://github.com/studysnap/authentication/pulls)
+[![License](https://img.shields.io/badge/license-Apache2.0-blue.svg)](/LICENSE)
+
+</div>
+
+---
+
+<p align="center">Authentication Backend for the StudySnap application</p>
     <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The authentication backend for StudySnap created using the [NestJS](http://nestjs.com) framework. Leverages [Passport](http://www.passportjs.org) for use of custom authentication strategies and JWT token signing.
 
-## Installation
+## Prerequisites
+
+This project has a few extra requirements in order to function properly.
+
+- Connection to an existing(or new) PostgreSQL database (configured through docker). This is where we would like to store users and active refresh tokens.
+- **Preferrably** [Docker](http://docker.com) and/or [docker-compose](https://docs.docker.com/compose/). Note: Can be run without docker.
+- Configured `.env` or `exported` environment variables according to the available configurations listed below.
+
+## Available Configurations
+
+Below is a list of available configuration options to customize the project. **Note:** These configuration options are available to be individually configured as per your environment (`development`, `test`, and `production`)
+
+| Option                  | Description                                                                                              | Default                   | Optional |
+|-------------------------|----------------------------------------------------------------------------------------------------------|---------------------------|----------|
+| PORT             | Defines the port for the API to listen on                                                                | `5555`                    | Y        |
+| MAX_REQUESTS            | Defines the maximum number of requests per 15 minutes (rate limiting)                                    | `250`                    | Y        |
+| BCRYPT_SALT_ROUNDS           | Specifies the number of salt rounds to apply to password hashes using [bcrypt](https://www.npmjs.com/package/bcrypt) | `12` | Y        |
+| DB_DIALECT       | Specifies the type of database you wish to use in your implementation. Thanks to NestJS, this is optional, however there will be some limited extra setup required for anything other than `postgreSQL` | `postgres`                      | Y        |
+| DB_HOST                | Specifies the database host address (IP or Domain) to reach the database                                | `localhost`               | N        |
+| DB_PORT                | Specifies the port to reach the database host application                                                                    | `5432`                    | Y        |
+| DB_USER                | The database user to authenticate to the database host                                                    | `NONE`                     | N        |
+| DB_PASS            | The password to authenticate `$DB_USER`                                                             | `NONE`                     | N        |
+| DB_USER_DATABASE       | The name of the application database where you will store your users.                                                 | `studysnap_db`               | Y        |
+| DB_RETRY_ATTEMPTS             | Number of times to retry a failed connection to the database configured.                                                                              | `2`                   | Y        |
+| JWT_SECRET      | Used to cryptographically sign/decode authentication (JWT) tokens sent/recieved from the authentication/authorization server.                                                                              | `NONE`                     | N        |
+| JWT_ACCESS_TOKEN_EXPIRE_TIME | Specifies the time it takes for an access token to expire. (in `production` it is recommended this be a short-lived token to limit risk of compromised tokens causing damange) | `10m`                       | Y        |
+
+> The current dev environment setup I have convieniently included in the `.env` file at the root of this project.
+
+## Running the app
+
+You can choose to run this project in multiple ways depending on what you need.
+
+### Extra Steps
+
+Currently there is one additional setup command you will need to run before running the app in Docker or Standalone. You must have postgreSQL installed and configured properly (as per **prerequisites** above). Do this with Docker (**recommended**).
+
+```bash
+
+# Usable with default configuration
+$ docker run -d \
+    -e POSTGRES_DB=studysnap_db \
+    -e POSTGRES_USER=studysnap \
+    -e POSTGRES_PASSWORD=snapstudy \
+    -p 5432:5432 \
+    postgres:13.1
+
+```
+
+> Make sure that you change the passed environment variables if your needs change.
+
+### Docker (recommended)
+
+From the project root, run the following.
+
+```bash
+# Run from published image
+$ docker run -d -p 5555:5555 <other_options> studysnap/authentication:<version_tag>
+
+# Build & Run Locally
+$ docker build -t local/studysnap-authentication:latest .
+$ docker run -d -p 5555:5555 <other_options> local/studysnap-authentication:latest
+
+```
+
+### Standalone / Development
+
+Install the required project dependencies
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+Run the project
 
 ```bash
 # development
 $ npm run start
 
-# watch mode
+# development with watch mode (recommended)
 $ npm run start:dev
 
 # production mode
 $ npm run start:prod
 ```
 
-## Test
+## Running Tests
 
 ```bash
 # unit tests
@@ -60,14 +124,14 @@ $ npm run test:cov
 
 ## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Create an **issue** in the StudySnap [Jira](http://studysnap.atlassian.net)
 
-## Stay in touch
+## Authors
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- [Benjamin Sykes](https://sykesdev.ca)
+- [Liam Stickney](https://github.com/LiamStickney)
+- [Malik Sheharyaar Talhat](https://github.com/orgs/Study-Snap/people/maliksheharyaar)
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+StudySnap is [Apache licensed](LICENSE).
