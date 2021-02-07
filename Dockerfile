@@ -15,6 +15,9 @@ RUN npm i
 # Copy project files and create production build
 COPY . .
 
+# Update file group permissions
+RUN chmod -R 755 /app
+
 # Change this port to your configured port in `config/index.ts`
 EXPOSE 5555
 
