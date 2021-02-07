@@ -16,6 +16,7 @@ RUN npm i
 COPY . .
 
 # Update file group permissions
+RUN chown -R studysnap:studysnap /app
 RUN chmod -R 755 /app
 
 # Change this port to your configured port in `config/index.ts`
