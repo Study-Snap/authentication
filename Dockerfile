@@ -21,5 +21,5 @@ EXPOSE 5555
 
 # Use nonroot user studysnap
 USER studysnap
-ENTRYPOINT ["/sbin/tini", "--", "npm", "run"]
-CMD ["start:prod"]
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["./.docker/docker-entrypoint.sh"]
