@@ -5,7 +5,7 @@ import { User } from '../users/models/user.model'
 import { AuthService } from './services/auth.service'
 import { UserCreateDto } from './dto/user-create.dto'
 import { TokensService } from './services/tokens.service'
-import { Cookies } from 'src/decorators/cookies.decorator'
+import { Cookies } from '../../decorators/cookies.decorator'
 
 @Controller('api/auth')
 export class AuthController {

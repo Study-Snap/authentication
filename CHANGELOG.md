@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Modified
 
 - (SSPP-25): Modified token refresh endpoint to accept refreshToken in the form of an httpOnly cookie instead of body request.
+- (SSPP-25): Updated e2e testing suite to set cookie instead for testing refresh token functionality
 - (docs): Updated docs with deploy instructions
 - (docs): Fixed badges on docs
 
