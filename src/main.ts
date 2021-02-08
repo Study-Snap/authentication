@@ -5,6 +5,7 @@ import { AppModule } from './app.module'
 import { getConfig } from './config'
 import { IConfigAttributes } from './interfaces/config/app-config.interface'
 import { limitRequests } from './middleware/ratelimit.middleware'
+import * as cookieParser from 'cookie-parser'
 
 const config: IConfigAttributes = getConfig()
 
@@ -14,6 +15,7 @@ async function bootstrap() {
 	// Configure the app
 	app.enableCors()
 	app.use(limitRequests(config.maxRequests))
+	app.use(cookieParser())
 
 	// Validate DTOs sent with request
 	app.useGlobalPipes(
