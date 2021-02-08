@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [0.1.1]
+
+### Modified
+
+- (SSPP-25): Modified token refresh endpoint to accept refreshToken in the form of an httpOnly cookie instead of body request.
+- (SSPP-25): Updated e2e testing suite to set cookie instead for testing refresh token functionality
+- (docs): Updated docs with deploy instructions
+- (docs): Fixed badges on docs
+
+### Removed
+
+- (SSPP-25): The old DTO for tokenRefresh as we do not require it anymore since it is impossible to pass a refreshToken using the request body
+
 ## [Released]
 
 ## [0.1.0]

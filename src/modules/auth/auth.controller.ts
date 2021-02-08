@@ -3,9 +3,9 @@ import { JwtAuth } from '../../decorators/jwt-auth.decorator'
 import { LocalAuth } from '../../decorators/local-auth.decorator'
 import { User } from '../users/models/user.model'
 import { AuthService } from './services/auth.service'
-import { TokenRefreshDto } from './dto/token-refresh.dto'
 import { UserCreateDto } from './dto/user-create.dto'
 import { TokensService } from './services/tokens.service'
+import { Cookies } from '../../decorators/cookies.decorator'
 
 @Controller('api/auth')
 export class AuthController {
@@ -29,11 +29,10 @@ export class AuthController {
 
 	@Post('refresh')
 	async refresh(
-		@Body() data: TokenRefreshDto
+		@Cookies('refreshToken') token: string
 	): Promise<{ message: string; accessToken: string; refreshToken: string }> {
-		const { accessToken, refreshToken } = await this.tokensService.createAccessTokenFromRefreshToken(data.refreshToken)
-
-		// TODO: Grab refresh token from httpOnly cookie instead of from request body
+		// Retrieve the new access token and refresh tokens (using token passed through httpOnly cookie)
+		const { accessToken, refreshToken } = await this.tokensService.createAccessTokenFromRefreshToken(token)
 
 		return {
 			message: 'success',
