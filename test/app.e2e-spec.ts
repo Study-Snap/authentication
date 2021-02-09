@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt'
 import { testUsers } from './data/user.data'
 import { AppModule } from './../src/app.module'
 import { Sequelize, Dialect } from 'sequelize'
-import { IConfigAttributes } from 'src/interfaces/config/app-config.interface'
+import { IConfigAttributes } from '../src/common/interfaces/config/app-config.interface'
 import { getConfig } from '../src/config'
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
 import { NestExpressApplication } from '@nestjs/platform-express'
@@ -192,9 +192,9 @@ describe('Authentication', () => {
 				expect(body.refreshToken).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
 			})
 			it('should prevent refresh of tokens with invalid refresh token', async () => {
-				const res = await request(app.getHttpServer()).post(API_REFRESH_ENDPOINT).send({
-					refreshToken: 'FAKE_TOKEN'
-				})
+				const res = await request(app.getHttpServer()).post(API_REFRESH_ENDPOINT).set('Cookie', [
+					`refreshToken=FAKE_REFRESH_TOKEN; Path=/; Domain=localhost; HttpOnly; Expires=Tue, 08 Feb 2080 18:25:59 GMT;`
+				])
 
 				const body = res.body
 				expect(res.status).toBe(HttpStatus.UNPROCESSABLE_ENTITY)

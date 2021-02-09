@@ -1,4 +1,6 @@
-export const testUsers = [
+import { UserCreateDto } from 'src/modules/auth/dto/user-create.dto'
+
+export const testUsers: UserCreateDto[] = [
 	{
 		firstName: 'Tom',
 		lastName: 'Jerry',

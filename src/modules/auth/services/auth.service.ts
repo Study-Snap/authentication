@@ -2,7 +2,7 @@ import { ConflictException, Injectable, UnauthorizedException, UnprocessableEnti
 import { User } from '../../users/models/user.model'
 import { UsersRepository } from '../../users/users.repository'
 import * as bcrypt from 'bcrypt'
-import { IConfigAttributes } from '../../../interfaces/config/app-config.interface'
+import { IConfigAttributes } from '../../../common/interfaces/config/app-config.interface'
 import { getConfig } from '../../../config'
 import { TokensService } from './tokens.service'
 
@@ -15,10 +15,10 @@ export class AuthService {
 	async register({ firstName, lastName, email, password }): Promise<User> {
 		const user = await this.usersRepository.findUserByEmail(email)
 
-    // Verify user does not already exist
+		// Verify user does not already exist
 		if (user) throw new ConflictException({ message: 'A user with that email already exists' })
 
-    // Hash password for storage
+		// Hash password for storage
 		const hashedPassword = await bcrypt.hash(password, config.bcryptSaltRounds)
 		password = hashedPassword
 		return this.usersRepository.createUser({
