@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { getConfig } from '../../config'
-import { IConfigAttributes } from '../../interfaces/config/app-config.interface'
+import { IConfigAttributes } from '../../common/interfaces/config/app-config.interface'
 import { RefreshTokensModule } from '../refresh-tokens/refresh-tokens.module'
 import { RefreshTokensRepository } from '../refresh-tokens/refresh-tokens.repository'
 import { UsersModule } from '../users/users.module'
@@ -28,7 +28,16 @@ const config: IConfigAttributes = getConfig()
 			}
 		})
 	],
-	controllers: [AuthController],
-	providers: [AuthService, UsersRepository, LocalStrategy, JwtStrategy, RefreshTokensRepository, TokensService]
+	controllers: [
+		AuthController
+	],
+	providers: [
+		AuthService,
+		UsersRepository,
+		LocalStrategy,
+		JwtStrategy,
+		RefreshTokensRepository,
+		TokensService
+	]
 })
 export class AuthModule {}

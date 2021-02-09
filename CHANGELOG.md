@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.1]
+## [0.2.0]
+
+### Added
+
+- (SSPP-69): Swagger UI implementation available on `domain.com/docs` to help support our program documentation.
 
 ### Modified
 
@@ -15,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (SSPP-25): Updated e2e testing suite to set cookie instead for testing refresh token functionality
 - (docs): Updated docs with deploy instructions
 - (docs): Fixed badges on docs
+- (SSPP-69): Refactored some source code
 
 ### Removed
 

@@ -1,5 +1,5 @@
-import { DEVELOPMENT, PRODUCTION, TEST } from '../constants'
-import { IConfig } from '../interfaces/config/app-config.interface'
+import { DEVELOPMENT, PRODUCTION, TEST } from '../common/constants'
+import { IConfig } from '../common/interfaces/config/app-config.interface'
 import * as dotenv from 'dotenv'
 dotenv.config()
 

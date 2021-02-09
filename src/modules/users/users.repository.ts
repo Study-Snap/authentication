@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
-import { PASSWORD_FIELD } from '../../constants/index'
+import { PASSWORD_FIELD } from '../../common/constants/index'
 import { User } from './models/user.model'
 
 @Injectable()
@@ -13,7 +13,9 @@ export class UsersRepository {
 				email
 			},
 			attributes: {
-				exclude: [PASSWORD_FIELD]
+				exclude: [
+					PASSWORD_FIELD
+				]
 			}
 		})
 	}
