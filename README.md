@@ -22,6 +22,11 @@
 
 The authentication backend for StudySnap created using the [NestJS](http://nestjs.com) framework. Leverages [Passport](http://www.passportjs.org) for use of custom authentication strategies and JWT token signing.
 
+## Useful Links
+
+- [Authentication Helm Chart](https://github.com/Study-Snap/charts/tree/master/charts/authentication)
+- This project tracks changes through the [CHANGELOG](/CHANGELOG.md)
+
 ## Prerequisites
 
 This project has a few extra requirements in order to function properly.

@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - (SSPP-69): Swagger UI implementation available on `domain.com/docs` to help support our program documentation.
+- (SSPP-77): Support for encrypted connection through SSL
+- (docs): Added changelog link to main README as well as connecting link for helm chart
 
 ### Modified
 
