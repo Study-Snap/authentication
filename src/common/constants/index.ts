@@ -1,3 +1,4 @@
+export const PROJECT_VERSION = '0.2.0'
 export const LOCAL_STRATEGY = 'local'
 export const JWT_STRATEGY = 'jwt'
 export const SEQUELIZE = 'SEQUELIZE'

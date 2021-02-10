@@ -7,8 +7,7 @@ import { IConfigAttributes } from './common/interfaces/config/app-config.interfa
 import { limitRequests } from './middleware/ratelimit.middleware'
 import * as cookieParser from 'cookie-parser'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-
-import * as pkg from '../package.json'
+import { PROJECT_VERSION } from './common/constants'
 
 const config: IConfigAttributes = getConfig()
 
@@ -33,7 +32,7 @@ async function bootstrap() {
 	const swaggerConfig = new DocumentBuilder()
 		.setTitle('StudySnap Authentication')
 		.setDescription('Documentation for the StudySnap Authentication server API')
-		.setVersion(pkg.version)
+		.setVersion(PROJECT_VERSION)
 		.addTag('auth')
 		.build()
 	const document = SwaggerModule.createDocument(app, swaggerConfig)
