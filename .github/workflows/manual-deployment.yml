@@ -3,7 +3,7 @@ name: deploy
 env:
   space: StudySnap
   projectName: AuthenticationBackend
-  chartVersion: 1.0.2
+  chartVersion: authentication:1.0.2
 
 on:
   workflow_dispatch:
