@@ -29,6 +29,6 @@ jobs:
         with:
           path: ./package.json
       - name: Create an octopus release
-        run: octo create-release --space=${{ env.space }} --project=${{ env.projectName }} --version=${{ steps.package_info.outputs.version }} --package=${{ env.chartVersion }} --server=${{ secrets.OCTOPUS_SERVER }} --apiKey=${{ secrets.OCTOPUS_DEPLOY_KEY }}
+        run: octo create-release --ignoreExisting --space=${{ env.space }} --project=${{ env.projectName }} --version=${{ steps.package_info.outputs.version }} --package=${{ env.chartVersion }} --server=${{ secrets.OCTOPUS_SERVER }} --apiKey=${{ secrets.OCTOPUS_DEPLOY_KEY }}
       - name: Deploy the release to kubernetes
         run: octo deploy-release --progress --forcePackageDownload --waitForDeployment --deployTo=${{ env.environmentName }} --space=${{ env.space }} --project=${{ env.projectName }} --version=${{ steps.package_info.outputs.version }} --server=${{ secrets.OCTOPUS_SERVER }} --apiKey=${{ secrets.OCTOPUS_DEPLOY_KEY }}
