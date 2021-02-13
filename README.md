@@ -5,11 +5,10 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-![Build and Push Docker](https://github.com/studysnap/authentication/workflows/Build%20and%20Push%20Docker/badge.svg)
-![Lint and Scan Docker](https://github.com/studysnap/authentication/workflows/Lint%20and%20Scan%20Docker/badge.svg)
-![CodeQL Security Check](https://github.com/studysnap/authentication/workflows/CodeQL%20Security%20Check/badge.svg)
-![Source Tests](https://github.com/studysnap/authentication/workflows/Test%20and%20Lint%20Source/badge.svg)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/studysnap/authentication.svg)](https://github.com/studysnap/authentication/pulls)
+![Build and Push Docker](https://github.com/Study-Snap/authentication/workflows/Build%20and%20Push%20Docker/badge.svg)
+![Lint and Scan Docker](https://github.com/Study-Snap/authentication/workflows/Lint%20and%20Scan%20Docker/badge.svg)
+![E2E and Coverage](https://github.com/Study-Snap/authentication/workflows/E2E%20and%20Coverage/badge.svg)
+![Unit Tests](https://github.com/Study-Snap/authentication/workflows/Unit%20Tests/badge.svg)
 [![License](https://img.shields.io/badge/license-Apache2.0-blue.svg)](/LICENSE)
 
 </div>
@@ -22,6 +21,11 @@
 ## Description
 
 The authentication backend for StudySnap created using the [NestJS](http://nestjs.com) framework. Leverages [Passport](http://www.passportjs.org) for use of custom authentication strategies and JWT token signing.
+
+## Useful Links
+
+- [Authentication Helm Chart](https://github.com/Study-Snap/charts/tree/master/charts/authentication)
+- This project tracks changes through the [CHANGELOG](/CHANGELOG.md)
 
 ## Prerequisites
 
@@ -121,6 +125,23 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Deployment
+
+We are currently using Helm to handle our deployment to our K8s Cluster. To manually deploy, we need to execute the following commands.
+
+```bash
+
+# Add the studysnap helm repository & Update
+helm repo add studysnap https://study-snap.github.io/charts/
+helm repo update
+
+# Now install the authentication chart from the repository
+helm install authentication studysnap/authentication [optional_flags]
+
+```
+
+> I personally recommend using [k8s Lens](http://k8slens.dev) to help visualize the deployment on the cluster
 
 ## Support
 

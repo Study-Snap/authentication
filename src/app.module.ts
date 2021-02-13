@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common'
 import { SequelizeModule } from '@nestjs/sequelize'
 import { Dialect } from 'sequelize/types'
 import { getConfig } from './config'
-import { IConfigAttributes } from './interfaces/config/app-config.interface'
+import { IConfigAttributes } from './common/interfaces/config/app-config.interface'
 
 // Get App Config
 const config: IConfigAttributes = getConfig()

@@ -4,10 +4,11 @@ import * as bcrypt from 'bcrypt'
 import { testUsers } from './data/user.data'
 import { AppModule } from './../src/app.module'
 import { Sequelize, Dialect } from 'sequelize'
-import { IConfigAttributes } from 'src/interfaces/config/app-config.interface'
+import { IConfigAttributes } from '../src/common/interfaces/config/app-config.interface'
 import { getConfig } from '../src/config'
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
 import { NestExpressApplication } from '@nestjs/platform-express'
+import * as cookieParser from 'cookie-parser'
 
 // Config variables
 const config: IConfigAttributes = getConfig()
@@ -59,6 +60,9 @@ describe('Authentication', () => {
 
 		// Create app context
 		app = testModule.createNestApplication<NestExpressApplication>()
+
+		// Allow parsing of cookies using cookie-parser
+		app.use(cookieParser())
 
 		// Insert global pipes here (see: https://stackoverflow.com/questions/58843038/how-to-manually-test-input-validation-with-nestjs-and-class-validator)
 		app.useGlobalPipes(
@@ -178,9 +182,9 @@ describe('Authentication', () => {
 				expect(body.email).toBeDefined()
 			})
 			it('should provide new access & refresh tokens by using a valid refresh token', async () => {
-				const res = await request(app.getHttpServer()).post(API_REFRESH_ENDPOINT).send({
-					refreshToken: refreshToken
-				})
+				const res = await request(app.getHttpServer()).post(API_REFRESH_ENDPOINT).set('Cookie', [
+					`refreshToken=${refreshToken}; Path=/; Domain=localhost; HttpOnly; Expires=Tue, 08 Feb 2080 18:25:59 GMT;`
+				])
 
 				const body = res.body
 				expect(res.status).toBe(HttpStatus.CREATED)
@@ -188,9 +192,9 @@ describe('Authentication', () => {
 				expect(body.refreshToken).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
 			})
 			it('should prevent refresh of tokens with invalid refresh token', async () => {
-				const res = await request(app.getHttpServer()).post(API_REFRESH_ENDPOINT).send({
-					refreshToken: 'FAKE_TOKEN'
-				})
+				const res = await request(app.getHttpServer()).post(API_REFRESH_ENDPOINT).set('Cookie', [
+					`refreshToken=FAKE_REFRESH_TOKEN; Path=/; Domain=localhost; HttpOnly; Expires=Tue, 08 Feb 2080 18:25:59 GMT;`
+				])
 
 				const body = res.body
 				expect(res.status).toBe(HttpStatus.UNPROCESSABLE_ENTITY)
