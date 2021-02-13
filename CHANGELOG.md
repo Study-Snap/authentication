@@ -5,15 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Released]
+## [Unreleased]
 
-## [0.2.0]
+## [1.0.0]
 
 ### Added
 
 - (SSPP-69): Swagger UI implementation available on `domain.com/docs` to help support our program documentation.
 - (SSPP-77): Support for encrypted connection through SSL
 - (docs): Added changelog link to main README as well as connecting link for helm chart
+- (SSPP-90): CI/CD to support postgres server package in helm chart
+- (SSPP-90): Octopus Deployment release process in CD
 
 ### Modified
 

@@ -1,0 +1,26 @@
+name: deploy
+
+env:
+  space: StudySnap
+  projectName: AuthenticationBackend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install Octopus Deploy CLI
+        uses: OctopusDeploy/install-octocli@v1
+        with:
+          version: 7.4.2
+      - name: Get package info for this release
+        id: package_info
+        uses: gregoranders/nodejs-project-info@v0.0.11
+        with:
+          path: ./package.json
+      - name: Create an octopus release
+        run: octo create-release --space=${{ env.space }} --project=${{ env.projectName }} --version=${{ steps.package_info.outputs.version }} --server=${{ secrets.OCTOPUS_SERVER }} --apiKey=${{ secrets.OCTOPUS_DEPLOY_KEY }}
