@@ -24,7 +24,7 @@ The authentication backend for StudySnap created using the [NestJS](http://nestj
 
 ## Useful Links
 
-- [Authentication Helm Chart](https://github.com/Study-Snap/charts/tree/master/charts/authentication)
+- Check out the [Authentication Helm Chart](https://github.com/Study-Snap/charts/tree/master/charts/authentication) used for helm deployment
 - This project tracks changes through the [CHANGELOG](/CHANGELOG.md)
 
 ## Prerequisites
@@ -151,7 +151,7 @@ Create an **issue** in the StudySnap [Jira](http://studysnap.atlassian.net)
 
 - [Benjamin Sykes](https://sykesdev.ca)
 - [Liam Stickney](https://github.com/LiamStickney)
-- [Malik Sheharyaar Talhat](https://github.com/orgs/Study-Snap/people/maliksheharyaar)
+- [Malik Sheharyaar Talhat](https://github.com/maliksheharyaar)
 
 ## License
 
