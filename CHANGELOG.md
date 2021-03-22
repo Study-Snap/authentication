@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [Released]
 
 ## [1.0.1]
 
@@ -13,8 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - (hotfix): Fixed pathing for controller endpoints so that k8s deployment does not conflict with studysnap/neptune deployment.
 - (ref): Refactored some code regarding `/auth/docs`
-
-## [Released]
 
 ## [1.0.0]
 
