@@ -10,7 +10,7 @@ import { ApiBody, ApiResponse, ApiTags, ApiHeader } from '@nestjs/swagger'
 import { UserLoginDto } from '../../common/docs/types/user-login.doc.type'
 
 @ApiTags('auth')
-@Controller('api/auth')
+@Controller('auth')
 export class AuthController {
 	constructor(private readonly authService: AuthService, private readonly tokensService: TokensService) {}
 
@@ -56,7 +56,6 @@ export class AuthController {
 		}
 	}
 
-	//TODO: Remove this test endpoint when authentication implementation is complete
 	@ApiHeader({ name: 'Authorization', description: 'Bearer `<token>`' })
 	@ApiResponse({ status: HttpStatus.OK, description: 'User ID and Email associated with the token' })
 	@JwtAuth()
