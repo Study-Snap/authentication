@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - (hotfix): Fixed pathing for controller endpoints so that k8s deployment does not conflict with studysnap/neptune deployment.
 - (ref): Refactored some code regarding `/auth/docs`
+- (hotfix): Hopefully resolve any further issues with environment confusion by removing (renaming) `.env` to a development variant and excluding further `*.env` files from git and docker builds.
 
 ## [1.0.0]
 
