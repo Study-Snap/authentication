@@ -19,14 +19,14 @@ const appConfig: IConfig = {
 		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '20s'
 	},
 	test: {
-		listenPort: process.env.PORT || 5555,
+		listenPort: process.env.PORT || 5000,
 		maxRequests: 999,
 		bcryptSaltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS) || 12,
 		dbDialect: process.env.DB_DIALECT || 'postgres',
 		dbHost: process.env.DB_HOST || 'localhost',
 		dbPort: process.env.DB_PORT || 7654,
-		dbUsername: process.env.DB_USER,
-		dbPassword: process.env.DB_PASS,
+		dbUsername: process.env.DB_USER || 'studysnap',
+		dbPassword: process.env.DB_PASS || 'snapstudy',
 		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_testdb',
 		dbRetryAttempts: parseInt(process.env.DB_RETRY_ATTEMPTS) || 2,
 		jwtSecret: process.env.JWT_SECRET || 'test_secret',

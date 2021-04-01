@@ -79,7 +79,7 @@ describe('Authentication', () => {
 
 	describe('AuthController', () => {
 		describe('Register Users', () => {
-			const API_REGISTER_ENDPOINT = '/api/auth/register'
+			const API_REGISTER_ENDPOINT = '/auth/register'
 
 			it('should register a user', async () => {
 				const data = {
@@ -118,7 +118,7 @@ describe('Authentication', () => {
 			})
 		})
 		describe('User Login', () => {
-			const API_LOGIN_ENDPOINT = '/api/auth/login'
+			const API_LOGIN_ENDPOINT = '/auth/login'
 
 			it('should respond with "user does not exist" with invalid email', async () => {
 				const data = {
@@ -163,8 +163,8 @@ describe('Authentication', () => {
 		})
 
 		describe('Protected Resources and Refreshing Tokens', () => {
-			const API_TEST_ENDPOINT = '/api/auth/test'
-			const API_REFRESH_ENDPOINT = '/api/auth/refresh'
+			const API_TEST_ENDPOINT = '/auth/test'
+			const API_REFRESH_ENDPOINT = '/auth/refresh'
 
 			it('should prevent access with an invalid access token', async () => {
 				const res = await request(app.getHttpServer()).get(API_TEST_ENDPOINT).set('Authorization', `Bearer FAKE_TOKEN`)

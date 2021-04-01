@@ -36,7 +36,7 @@ async function bootstrap() {
 		.addTag('auth')
 		.build()
 	const document = SwaggerModule.createDocument(app, swaggerConfig)
-	SwaggerModule.setup('docs', app, document, {
+	SwaggerModule.setup('auth/docs', app, document, {
 		swaggerOptions: {
 			supportedSubmitMethods: []
 		}

@@ -24,7 +24,7 @@ The authentication backend for StudySnap created using the [NestJS](http://nestj
 
 ## Useful Links
 
-- [Authentication Helm Chart](https://github.com/Study-Snap/charts/tree/master/charts/authentication)
+- Check out the [Authentication Helm Chart](https://github.com/Study-Snap/charts/tree/master/charts/authentication) used for helm deployment
 - This project tracks changes through the [CHANGELOG](/CHANGELOG.md)
 
 ## Prerequisites
@@ -115,6 +115,17 @@ $ npm run start:prod
 
 ## Running Tests
 
+First, for e2e testing, make sure that you have a test database running in the environment.
+
+```bash
+
+# Use docker to start up a postgres database for testing
+docker run -d -e POSTGRES_DB=studysnap_testdb -e POSTGRES_USER=studysnap -e POSTGRES_PASSWORD=snapstudy -p 7654:5432 postgres:13.1
+
+```
+
+Now you can run any of the following to test your changes
+
 ```bash
 # unit tests
 $ npm run test
@@ -151,7 +162,7 @@ Create an **issue** in the StudySnap [Jira](http://studysnap.atlassian.net)
 
 - [Benjamin Sykes](https://sykesdev.ca)
 - [Liam Stickney](https://github.com/LiamStickney)
-- [Malik Sheharyaar Talhat](https://github.com/orgs/Study-Snap/people/maliksheharyaar)
+- [Malik Sheharyaar Talhat](https://github.com/maliksheharyaar)
 
 ## License
 
