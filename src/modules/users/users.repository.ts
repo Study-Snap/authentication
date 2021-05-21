@@ -13,9 +13,7 @@ export class UsersRepository {
 				email
 			},
 			attributes: {
-				exclude: [
-					PASSWORD_FIELD
-				]
+				exclude: [PASSWORD_FIELD]
 			}
 		})
 	}

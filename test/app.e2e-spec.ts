@@ -24,9 +24,7 @@ describe('Authentication', () => {
 	// Setup test database
 	beforeAll(async () => {
 		const testModule: TestingModule = await Test.createTestingModule({
-			imports: [
-				AppModule
-			]
+			imports: [AppModule]
 		}).compile()
 
 		// Get Database reference
@@ -45,8 +43,8 @@ describe('Authentication', () => {
 
 		// Load some test data by using raw INSERT query (Test data from: test/data/*.data.ts)
 		for (let i = 0; i < testUsers.length; i++) {
-			let user = testUsers[i]
-			let hashedPassword = await bcrypt.hash(user.password, config.bcryptSaltRounds as number)
+			const user = testUsers[i]
+			const hashedPassword = await bcrypt.hash(user.password, config.bcryptSaltRounds as number)
 
 			// Insert user into the database
 			await connection.query(
@@ -79,7 +77,7 @@ describe('Authentication', () => {
 
 	describe('AuthController', () => {
 		describe('Register Users', () => {
-			const API_REGISTER_ENDPOINT = '/auth/register'
+			const API_REGISTER_ENDPOINT = '/register'
 
 			it('should register a user', async () => {
 				const data = {
@@ -118,7 +116,7 @@ describe('Authentication', () => {
 			})
 		})
 		describe('User Login', () => {
-			const API_LOGIN_ENDPOINT = '/auth/login'
+			const API_LOGIN_ENDPOINT = '/login'
 
 			it('should respond with "user does not exist" with invalid email', async () => {
 				const data = {
@@ -163,8 +161,8 @@ describe('Authentication', () => {
 		})
 
 		describe('Protected Resources and Refreshing Tokens', () => {
-			const API_TEST_ENDPOINT = '/auth/test'
-			const API_REFRESH_ENDPOINT = '/auth/refresh'
+			const API_TEST_ENDPOINT = '/test'
+			const API_REFRESH_ENDPOINT = '/refresh'
 
 			it('should prevent access with an invalid access token', async () => {
 				const res = await request(app.getHttpServer()).get(API_TEST_ENDPOINT).set('Authorization', `Bearer FAKE_TOKEN`)
@@ -182,9 +180,11 @@ describe('Authentication', () => {
 				expect(body.email).toBeDefined()
 			})
 			it('should provide new access & refresh tokens by using a valid refresh token', async () => {
-				const res = await request(app.getHttpServer()).post(API_REFRESH_ENDPOINT).set('Cookie', [
-					`refreshToken=${refreshToken}; Path=/; Domain=localhost; HttpOnly; Expires=Tue, 08 Feb 2080 18:25:59 GMT;`
-				])
+				const res = await request(app.getHttpServer())
+					.post(API_REFRESH_ENDPOINT)
+					.set('Cookie', [
+						`refreshToken=${refreshToken}; Path=/; Domain=localhost; HttpOnly; Expires=Tue, 08 Feb 2080 18:25:59 GMT;`
+					])
 
 				const body = res.body
 				expect(res.status).toBe(HttpStatus.CREATED)
@@ -192,9 +192,11 @@ describe('Authentication', () => {
 				expect(body.refreshToken).toMatch(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
 			})
 			it('should prevent refresh of tokens with invalid refresh token', async () => {
-				const res = await request(app.getHttpServer()).post(API_REFRESH_ENDPOINT).set('Cookie', [
-					`refreshToken=FAKE_REFRESH_TOKEN; Path=/; Domain=localhost; HttpOnly; Expires=Tue, 08 Feb 2080 18:25:59 GMT;`
-				])
+				const res = await request(app.getHttpServer())
+					.post(API_REFRESH_ENDPOINT)
+					.set('Cookie', [
+						`refreshToken=FAKE_REFRESH_TOKEN; Path=/; Domain=localhost; HttpOnly; Expires=Tue, 08 Feb 2080 18:25:59 GMT;`
+					])
 
 				const body = res.body
 				expect(res.status).toBe(HttpStatus.UNPROCESSABLE_ENTITY)
