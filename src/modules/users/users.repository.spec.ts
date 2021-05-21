@@ -81,7 +81,7 @@ describe('UsersRepository', () => {
 
 	describe('findUserById', () => {
 		it('should find a user and return a user object', async () => {
-			const id: number = 1
+			const id = 1
 			const expected = {
 				firstName: 'Tom',
 				password: 'password'
