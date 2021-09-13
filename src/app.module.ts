@@ -19,7 +19,7 @@ const config: IConfigAttributes = getConfig()
 			dialect: config.dbDialect as Dialect,
 			host: config.dbHost,
 			port: config.dbPort as number,
-			database: config.dbUserDatabase,
+			database: config.dbDatabaseName,
 			username: config.dbUsername,
 			password: config.dbPassword,
 			retryAttempts: config.dbRetryAttempts as number,

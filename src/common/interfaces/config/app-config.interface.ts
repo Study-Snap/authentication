@@ -5,7 +5,7 @@ export interface IConfigAttributes {
 	dbDialect: string
 	dbHost: string
 	dbPort: number | string
-	dbUserDatabase: string
+	dbDatabaseName: string
 	dbUsername: string
 	dbPassword: string
 	dbRetryAttempts: number | string

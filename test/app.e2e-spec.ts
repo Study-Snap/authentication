@@ -24,7 +24,7 @@ describe('Authentication', () => {
 	// Setup test database
 	beforeAll(async () => {
 		const testModule: TestingModule = await Test.createTestingModule({
-			imports: [AppModule]
+			imports: [ AppModule ]
 		}).compile()
 
 		// Get Database reference
@@ -32,7 +32,7 @@ describe('Authentication', () => {
 			dialect: config.dbDialect as Dialect,
 			host: config.dbHost,
 			port: config.dbPort as number,
-			database: config.dbUserDatabase,
+			database: config.dbDatabaseName,
 			username: config.dbUsername,
 			password: config.dbPassword,
 			logging: false
