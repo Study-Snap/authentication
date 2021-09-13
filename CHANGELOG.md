@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - (REF-PATHS): Fixed pathing to match new DNS scheme
 - (REF-PATHS): Updated test-e2e workflow to include environment setup with docker-compose
+- (SSPP-192): Updated environment to match new classrooms architecture
 
 ## [Released]
 

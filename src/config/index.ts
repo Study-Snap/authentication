@@ -3,6 +3,20 @@ import { IConfig } from '../common/interfaces/config/app-config.interface'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
+// Import env vars from appropriate file
+switch (process.env.NODE_ENV) {
+	case DEVELOPMENT:
+		dotenv.config({ path: '.dev.env' })
+		break
+	case TEST:
+		dotenv.config({ path: '.test.env' })
+	case PRODUCTION:
+		dotenv.config({ path: '.prod.env' })
+	default:
+		dotenv.config()
+		break
+}
+
 const appConfig: IConfig = {
 	development: {
 		listenPort: process.env.PORT || 5555,
@@ -27,7 +41,7 @@ const appConfig: IConfig = {
 		dbPort: process.env.DB_PORT || 7654,
 		dbUsername: process.env.DB_USER || 'studysnap',
 		dbPassword: process.env.DB_PASS || 'snapstudy',
-		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_testdb',
+		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_db',
 		dbRetryAttempts: parseInt(process.env.DB_RETRY_ATTEMPTS) || 2,
 		jwtSecret: process.env.JWT_SECRET || 'test_secret',
 		jwtAccessExpireTime: '10h'
