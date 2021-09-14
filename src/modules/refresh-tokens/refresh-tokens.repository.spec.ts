@@ -31,7 +31,7 @@ describe('RefreshTokensRepository', () => {
 				userId: 123
 			}
 
-			const token = await repository.createRefreshToken({ _id: expected.userId }, 1000)
+			const token = await repository.createRefreshToken({ id: expected.userId }, 1000)
 
 			expect(token).toBeDefined()
 			expect(token.userId).toEqual(expected.userId)

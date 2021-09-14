@@ -7,14 +7,14 @@ import { RefreshToken } from './models/refresh-token.model'
 export class RefreshTokensRepository {
 	constructor(@InjectModel(RefreshToken) private refreshTokenModel: typeof RefreshToken) {}
 
-	async createRefreshToken(user: User | { _id: number }, ttl: number): Promise<RefreshToken | undefined> {
+	async createRefreshToken(user: User | { id: number }, ttl: number): Promise<RefreshToken | undefined> {
 		// Get expiration date
 		const expiration = new Date()
 		expiration.setTime(expiration.getTime() + ttl)
 
 		// Create refresh token in database
 		const token = await this.refreshTokenModel.create({
-			userId: user._id,
+			userId: user.id,
 			isRevoked: false,
 			expires: expiration
 		})

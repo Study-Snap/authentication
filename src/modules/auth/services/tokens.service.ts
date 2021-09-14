@@ -24,7 +24,7 @@ export class TokensService {
 		// Note: Using default Sign Options from module import
 		const payload = {
 			email: user.email,
-			sub: user._id
+			sub: user.id
 		}
 
 		return this.jwtService.sign(payload)
@@ -32,7 +32,7 @@ export class TokensService {
 
 	async generateRefreshToken(user: User, expiresIn: number): Promise<string> {
 		// Remove any existing refresh token whenever we generate a new one (to limit potential for token compromise)
-		const existingToken = await this.getStoredRefreshTokenWithUser(user._id)
+		const existingToken = await this.getStoredRefreshTokenWithUser(user.id)
 		if (existingToken) {
 			await this.refreshTokensRepository.removeRefreshToken(existingToken)
 		}
@@ -43,8 +43,8 @@ export class TokensService {
 		// Override default Sign Options with Refresh token specific options
 		const opts: JwtSignOptions = {
 			secret: config.jwtSecret,
-			subject: String(user._id),
-			jwtid: String(token._id),
+			subject: String(user.id),
+			jwtid: String(token.id),
 			expiresIn
 		}
 
