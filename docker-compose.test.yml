@@ -1,0 +1,13 @@
+# Development Setup for performing E2E tests on Neptune
+version: "3.7"
+services:
+  ssdb:
+    image: postgres:13.1
+    container_name: studysnap_db
+    restart: on-failure
+    environment:
+      POSTGRES_DB: studysnap_db
+      POSTGRES_USER: studysnap
+      POSTGRES_PASSWORD: snapstudy
+    ports:
+      - 7654:5432

@@ -3,6 +3,20 @@ import { IConfig } from '../common/interfaces/config/app-config.interface'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
+// Import env vars from appropriate file
+switch (process.env.NODE_ENV) {
+	case DEVELOPMENT:
+		dotenv.config({ path: '.dev.env' })
+		break
+	case TEST:
+		dotenv.config({ path: '.test.env' })
+	case PRODUCTION:
+		dotenv.config({ path: '.prod.env' })
+	default:
+		dotenv.config()
+		break
+}
+
 const appConfig: IConfig = {
 	development: {
 		listenPort: process.env.PORT || 5555,
@@ -13,7 +27,7 @@ const appConfig: IConfig = {
 		dbPort: process.env.DB_PORT || 5432,
 		dbUsername: process.env.DB_USER,
 		dbPassword: process.env.DB_PASS,
-		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_db',
+		dbDatabaseName: process.env.DB_DATABASE_NAME || 'studysnap_db',
 		dbRetryAttempts: parseInt(process.env.DB_RETRY_ATTEMPTS) || 2,
 		jwtSecret: process.env.JWT_SECRET || 'dev_secret_do_change_in_prod',
 		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '20s'
@@ -27,7 +41,7 @@ const appConfig: IConfig = {
 		dbPort: process.env.DB_PORT || 7654,
 		dbUsername: process.env.DB_USER || 'studysnap',
 		dbPassword: process.env.DB_PASS || 'snapstudy',
-		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_testdb',
+		dbDatabaseName: process.env.DB_DATABASE_NAME || 'studysnap_db',
 		dbRetryAttempts: parseInt(process.env.DB_RETRY_ATTEMPTS) || 2,
 		jwtSecret: process.env.JWT_SECRET || 'test_secret',
 		jwtAccessExpireTime: '10h'
@@ -41,7 +55,7 @@ const appConfig: IConfig = {
 		dbPort: process.env.DB_PORT || 5432,
 		dbUsername: process.env.DB_USER,
 		dbPassword: process.env.DB_PASS,
-		dbUserDatabase: process.env.DB_USER_DATABASE || 'studysnap_db',
+		dbDatabaseName: process.env.DB_DATABASE_NAME || 'studysnap_db',
 		dbRetryAttempts: parseInt(process.env.DB_RETRY_ATTEMPTS) || 5,
 		jwtSecret: process.env.JWT_SECRET,
 		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '10m'

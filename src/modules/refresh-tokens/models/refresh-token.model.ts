@@ -6,7 +6,7 @@ export class RefreshToken extends Model<RefreshToken> {
 	@PrimaryKey
 	@AutoIncrement
 	@Column(DataType.INTEGER)
-	_id: number
+	id: number
 
 	@AllowNull(false)
 	@Column(DataType.INTEGER)

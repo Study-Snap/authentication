@@ -28,16 +28,7 @@ const config: IConfigAttributes = getConfig()
 			}
 		})
 	],
-	controllers: [
-		AuthController
-	],
-	providers: [
-		AuthService,
-		UsersRepository,
-		LocalStrategy,
-		JwtStrategy,
-		RefreshTokensRepository,
-		TokensService
-	]
+	controllers: [AuthController],
+	providers: [AuthService, UsersRepository, LocalStrategy, JwtStrategy, RefreshTokensRepository, TokensService]
 })
 export class AuthModule {}
