@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unrelease]
+## [Released]
+
+## [1.0.3]
+
+### Added
+
+- (SSPP-248): CI/CD tagging with unique commit hash for testing on bleeding-edge releases
 
 ## [1.0.2]
 
@@ -19,8 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (REF-PATHS): Fixed pathing to match new DNS scheme
 - (REF-PATHS): Updated test-e2e workflow to include environment setup with docker-compose
 - (SSPP-192): Updated environment to match new classrooms architecture
-
-## [Released]
 
 ## [1.0.1]
 
