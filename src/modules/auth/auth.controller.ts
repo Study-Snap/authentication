@@ -10,7 +10,6 @@ import { ApiBody, ApiResponse, ApiTags, ApiHeader } from '@nestjs/swagger'
 import { UserLoginDto } from '../../common/docs/types/user-login.doc.type'
 import { UserUpdatePasswdDto } from './dto/user-update-passwd.dto'
 import { AccessPairs } from './types/access-pairs.type'
-import { PasswdChangeSuccessResp } from './types/passwd-changed-success-response.type'
 
 @ApiTags('auth')
 @Controller('')
@@ -45,11 +44,11 @@ export class AuthController {
 	@ApiResponse({
 		description: 'The updated user ... NOTE: nothing visible will change since password is hidden from response.',
 		status: HttpStatus.OK,
-		type: PasswdChangeSuccessResp
+		type: User
 	})
 	@JwtAuth()
 	@Put('password')
-	async changePassword(@Request() req, @Body() data: UserUpdatePasswdDto): Promise<PasswdChangeSuccessResp> {
+	async changePassword(@Request() req, @Body() data: UserUpdatePasswdDto): Promise<User> {
 		return this.authService.updatePassword(req.user.id, data.password, data.newPassword)
 	}
 

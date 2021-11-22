@@ -62,8 +62,10 @@ export class UsersRepository {
 	}
 
 	async updatePassword(user: User, newPasswordHash: string): Promise<User | undefined> {
-		return user.update({
+		const userd = await user.update({
 			password: newPasswordHash
 		})
+
+		return this.userModel.findOne({ where: { id: userd.id }, attributes: { exclude: [ PASSWORD_FIELD ] } })
 	}
 }

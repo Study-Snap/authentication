@@ -1,9 +1,7 @@
 import {
 	BadRequestException,
 	ConflictException,
-	HttpStatus,
 	Injectable,
-	InternalServerErrorException,
 	NotFoundException,
 	UnauthorizedException,
 	UnprocessableEntityException
@@ -15,7 +13,6 @@ import { IConfigAttributes } from '../../../common/interfaces/config/app-config.
 import { getConfig } from '../../../config'
 import { TokensService } from './tokens.service'
 import { AccessPairs } from '../types/access-pairs.type'
-import { PasswdChangeSuccessResp } from '../types/passwd-changed-success-response.type'
 
 const config: IConfigAttributes = getConfig()
 
@@ -57,11 +54,7 @@ export class AuthService {
 		return this.usersRepository.findUserByEmail(user.email)
 	}
 
-	async updatePassword(
-		userId: number,
-		currentPassword: string,
-		newPassword: string
-	): Promise<PasswdChangeSuccessResp | undefined> {
+	async updatePassword(userId: number, currentPassword: string, newPassword: string): Promise<User | undefined> {
 		const user = await this.usersRepository.findUserById(userId)
 
 		// Ensure user exists
@@ -79,15 +72,10 @@ export class AuthService {
 
 		// Hash and update password
 		const hashedPassword = await bcrypt.hash(newPassword, config.bcryptSaltRounds)
-		await this.usersRepository.updatePassword(user, hashedPassword)
-
-		return {
-			statusCode: HttpStatus.OK,
-			message: `Successfully changed password for ${user.firstName}`
-		}
+		return this.usersRepository.updatePassword(user, hashedPassword)
 	}
 
-	async updateEmail(email: string, password: string, newEmail: string): Promise<User> {
+	async updateEmail(email: string, password: string, newEmail: string): Promise<User | undefined> {
 		const user = await this.validate(email, password)
 
 		if (!user) {

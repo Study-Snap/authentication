@@ -232,6 +232,9 @@ describe('Authentication', () => {
 			const res = await request(app.getHttpServer()).put('/password').send(reqData)
 
 			expect(res.status).toBe(HttpStatus.UNAUTHORIZED)
+			expect(res.body).toBeDefined()
+			expect(res.body.message).toBeDefined()
+			expect(res.body.message).toMatch('Unauthorized')
 		})
 
 		it('should prevent the entry of empty passwords', async () => {
@@ -251,6 +254,23 @@ describe('Authentication', () => {
 			expect(res.body.message[0]).toMatch('Your password must be at least 6 characters long')
 		})
 
+		it('should prevent the entry of passwords that are too long (longer than 32 characters)', async () => {
+			const reqData: UserUpdatePasswdDto = {
+				password: 'password',
+				newPassword: 'WAYTOLONGPASSWORDABSOLUTLYOVERKILL1234567$$$'
+			}
+
+			const res = await request(app.getHttpServer())
+				.put('/password')
+				.set('Authorization', `Bearer ${jwtToken}`)
+				.send(reqData)
+
+			expect(res.status).toBe(HttpStatus.BAD_REQUEST)
+			expect(res.body).toBeDefined()
+			expect(res.body.message).toBeInstanceOf(Array)
+			expect(res.body.message[0]).toMatch('Your password is too long')
+		})
+
 		it('should result in an updated User object response if the password is changed successfully', async () => {
 			const reqData: UserUpdatePasswdDto = {
 				password: 'password',
@@ -264,7 +284,9 @@ describe('Authentication', () => {
 
 			expect(res.status).toBe(HttpStatus.OK)
 			expect(res.body).toBeDefined()
-			expect(res.body.message).toMatch('Successfully changed password')
+			expect(res.body).toBeInstanceOf(Object)
+			expect(res.body.password).toBeUndefined()
+			expect(res.body.email).toMatch(testUsers[0].email)
 		})
 
 		afterAll(async () => {
