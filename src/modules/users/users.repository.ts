@@ -13,7 +13,7 @@ export class UsersRepository {
 				email
 			},
 			attributes: {
-				exclude: [PASSWORD_FIELD]
+				exclude: [ PASSWORD_FIELD ]
 			}
 		})
 	}
@@ -34,7 +34,7 @@ export class UsersRepository {
 		})
 	}
 
-	async createUser({ firstName, lastName, email, password }): Promise<User> {
+	async createUser({ firstName, lastName, email, password }): Promise<User | undefined> {
 		const response = await this.userModel
 			.create({
 				firstName,
@@ -53,5 +53,19 @@ export class UsersRepository {
 		}
 
 		return this.findUserByEmail(email)
+	}
+
+	async updateEmail(user: User, newEmail: string): Promise<User | undefined> {
+		return user.update({
+			email: newEmail
+		})
+	}
+
+	async updatePassword(user: User, newPasswordHash: string): Promise<User | undefined> {
+		const userd = await user.update({
+			password: newPasswordHash
+		})
+
+		return this.userModel.findOne({ where: { id: userd.id }, attributes: { exclude: [ PASSWORD_FIELD ] } })
 	}
 }

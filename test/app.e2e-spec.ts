@@ -9,6 +9,7 @@ import { getConfig } from '../src/config'
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import * as cookieParser from 'cookie-parser'
+import { UserUpdatePasswdDto } from 'src/modules/auth/dto/user-update-passwd.dto'
 
 // Config variables
 const config: IConfigAttributes = getConfig()
@@ -202,6 +203,100 @@ describe('Authentication', () => {
 				expect(res.status).toBe(HttpStatus.UNPROCESSABLE_ENTITY)
 				expect(body.message).toMatch('Malformed refresh token' || 'Revoked' || 'could not be found')
 			})
+		})
+	})
+
+	describe('User data mangagement and updates', () => {
+		it('should result in BAD_REQUEST if the users tries to update their password to the same thing', async () => {
+			const reqData: UserUpdatePasswdDto = {
+				password: 'password',
+				newPassword: 'password'
+			}
+
+			const res = await request(app.getHttpServer())
+				.put('/password')
+				.set('Authorization', `Bearer ${jwtToken}`)
+				.send(reqData)
+
+			expect(res.status).toBe(HttpStatus.BAD_REQUEST)
+			expect(res.body).toBeDefined()
+			expect(res.body.message).toMatch('Cannot change password to the same thing')
+		})
+
+		it('should validate the user is logged in and prevent password from being changed with proper authorization', async () => {
+			const reqData: UserUpdatePasswdDto = {
+				password: 'password',
+				newPassword: 'password'
+			}
+
+			const res = await request(app.getHttpServer()).put('/password').send(reqData)
+
+			expect(res.status).toBe(HttpStatus.UNAUTHORIZED)
+			expect(res.body).toBeDefined()
+			expect(res.body.message).toBeDefined()
+			expect(res.body.message).toMatch('Unauthorized')
+		})
+
+		it('should prevent the entry of empty passwords', async () => {
+			const reqData: UserUpdatePasswdDto = {
+				password: 'password',
+				newPassword: ''
+			}
+
+			const res = await request(app.getHttpServer())
+				.put('/password')
+				.set('Authorization', `Bearer ${jwtToken}`)
+				.send(reqData)
+
+			expect(res.status).toBe(HttpStatus.BAD_REQUEST)
+			expect(res.body).toBeDefined()
+			expect(res.body.message).toBeInstanceOf(Array)
+			expect(res.body.message[0]).toMatch('Your password must be at least 6 characters long')
+		})
+
+		it('should prevent the entry of passwords that are too long (longer than 32 characters)', async () => {
+			const reqData: UserUpdatePasswdDto = {
+				password: 'password',
+				newPassword: 'WAYTOLONGPASSWORDABSOLUTLYOVERKILL1234567$$$'
+			}
+
+			const res = await request(app.getHttpServer())
+				.put('/password')
+				.set('Authorization', `Bearer ${jwtToken}`)
+				.send(reqData)
+
+			expect(res.status).toBe(HttpStatus.BAD_REQUEST)
+			expect(res.body).toBeDefined()
+			expect(res.body.message).toBeInstanceOf(Array)
+			expect(res.body.message[0]).toMatch('Your password is too long')
+		})
+
+		it('should result in an updated User object response if the password is changed successfully', async () => {
+			const reqData: UserUpdatePasswdDto = {
+				password: 'password',
+				newPassword: 'password1'
+			}
+
+			const res = await request(app.getHttpServer())
+				.put('/password')
+				.set('Authorization', `Bearer ${jwtToken}`)
+				.send(reqData)
+
+			expect(res.status).toBe(HttpStatus.OK)
+			expect(res.body).toBeDefined()
+			expect(res.body).toBeInstanceOf(Object)
+			expect(res.body.password).toBeUndefined()
+			expect(res.body.email).toMatch(testUsers[0].email)
+		})
+
+		afterAll(async () => {
+			// Change password back to default ('password')
+			try {
+				const hashedPassword = await bcrypt.hash('password', config.bcryptSaltRounds)
+				await connection.query(`UPDATE users SET password = '${hashedPassword}'`)
+			} catch (err) {
+				console.error(`Failed to reset passwords to defaults. Reason: ${err}`)
+			}
 		})
 	})
 

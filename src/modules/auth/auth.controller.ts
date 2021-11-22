@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Request } from '@nestjs/common'
+import { Body, Controller, Get, HttpStatus, Post, Put, Req, Request } from '@nestjs/common'
 import { JwtAuth } from '../../common/decorators/jwt-auth.decorator'
 import { LocalAuth } from '../../common/decorators/local-auth.decorator'
 import { User } from '../users/models/user.model'
@@ -8,6 +8,8 @@ import { TokensService } from './services/tokens.service'
 import { Cookies } from '../../common/decorators/cookies.decorator'
 import { ApiBody, ApiResponse, ApiTags, ApiHeader } from '@nestjs/swagger'
 import { UserLoginDto } from '../../common/docs/types/user-login.doc.type'
+import { UserUpdatePasswdDto } from './dto/user-update-passwd.dto'
+import { AccessPairs } from './types/access-pairs.type'
 
 @ApiTags('auth')
 @Controller('')
@@ -15,15 +17,19 @@ export class AuthController {
 	constructor(private readonly authService: AuthService, private readonly tokensService: TokensService) {}
 
 	@ApiBody({ type: UserLoginDto, description: 'Enters a email and password combination as a JSON body' })
-	@ApiResponse({ status: HttpStatus.OK, description: 'An access token and refresh token pair' })
+	@ApiResponse({ status: HttpStatus.OK, description: 'An access token and refresh token pair', type: AccessPairs })
 	@ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Incorrect email or password' })
 	@LocalAuth()
 	@Post('login')
-	async login(@Request() req): Promise<{ accessToken: string; refreshToken: string }> {
+	async login(@Request() req): Promise<AccessPairs> {
 		return this.authService.getAccessAndRefreshTokens(req.user)
 	}
 
-	@ApiResponse({ status: HttpStatus.CREATED, description: 'User account details that have been created' })
+	@ApiResponse({
+		status: HttpStatus.CREATED,
+		description: 'User account details that have been created. NOTE: does not include password field even though shown',
+		type: User
+	})
 	@Post('register')
 	async register(@Body() userDto: UserCreateDto): Promise<User> {
 		return this.authService.register({
@@ -34,23 +40,43 @@ export class AuthController {
 		})
 	}
 
+	@ApiBody({
+		type: UserUpdatePasswdDto,
+		description: 'Provides details required to change the users password',
+		required: true
+	})
+	@ApiHeader({
+		name: 'Authorization',
+		description: 'Associated JWT authorization/access token to verify the user is logged in at the time of the request',
+		required: true
+	})
+	@ApiResponse({
+		description:
+			'The updated user ... NOTE: nothing visible will change since password is hidden from response. NOTE: does not include password field even though shown',
+		status: HttpStatus.OK,
+		type: User
+	})
+	@JwtAuth()
+	@Put('password')
+	async changePassword(@Request() req, @Body() data: UserUpdatePasswdDto): Promise<User> {
+		return this.authService.updatePassword(req.user.id, data.password, data.newPassword)
+	}
+
 	@ApiHeader({
 		name: 'cookie',
 		description: 'refreshToken=`<token>`; Path=/; Domain=localhost; HttpOnly; Expires=Tue, 08 Feb 2080 18:25:59 GMT;'
 	})
 	@ApiResponse({
 		status: HttpStatus.CREATED,
-		description: 'Response with new access token (`accessToken`) and refresh token (`refreshToken`)'
+		description: 'Response with new access token (`accessToken`) and refresh token (`refreshToken`)',
+		type: AccessPairs
 	})
 	@Post('refresh')
-	async refresh(
-		@Cookies('refreshToken') token: string
-	): Promise<{ message: string; accessToken: string; refreshToken: string }> {
+	async refresh(@Cookies('refreshToken') token: string): Promise<AccessPairs> {
 		// Retrieve the new access token and refresh tokens (using token passed through httpOnly cookie)
 		const { accessToken, refreshToken } = await this.tokensService.createAccessTokenFromRefreshToken(token)
 
 		return {
-			message: 'success',
 			accessToken,
 			refreshToken
 		}

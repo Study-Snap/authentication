@@ -1,10 +1,18 @@
-import { ConflictException, Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common'
+import {
+	BadRequestException,
+	ConflictException,
+	Injectable,
+	NotFoundException,
+	UnauthorizedException,
+	UnprocessableEntityException
+} from '@nestjs/common'
 import { User } from '../../users/models/user.model'
 import { UsersRepository } from '../../users/users.repository'
 import * as bcrypt from 'bcrypt'
 import { IConfigAttributes } from '../../../common/interfaces/config/app-config.interface'
 import { getConfig } from '../../../config'
 import { TokensService } from './tokens.service'
+import { AccessPairs } from '../types/access-pairs.type'
 
 const config: IConfigAttributes = getConfig()
 
@@ -29,7 +37,7 @@ export class AuthService {
 		})
 	}
 
-	async validate(email: string, password: string): Promise<User | undefined> {
+	async validate(email: string, password: string): Promise<User> {
 		const user = await this.usersRepository.findUserByEmailForAuth(email)
 
 		if (!user) {
@@ -46,7 +54,39 @@ export class AuthService {
 		return this.usersRepository.findUserByEmail(user.email)
 	}
 
-	async getAccessAndRefreshTokens(user: User): Promise<{ accessToken: string; refreshToken: string }> {
+	async updatePassword(userId: number, currentPassword: string, newPassword: string): Promise<User | undefined> {
+		const user = await this.usersRepository.findUserById(userId)
+
+		// Ensure user exists
+		if (!user) {
+			throw new NotFoundException(`Could not validate the user with ID, ${userId}`)
+		}
+
+		// Validate the users credentials (current password) before moving forward with the change
+		await this.validate(user.email, currentPassword)
+
+		// Ensure the passwords are not the same
+		if (currentPassword === newPassword) {
+			throw new BadRequestException(`Cannot change password to the same thing`)
+		}
+
+		// Hash and update password
+		const hashedPassword = await bcrypt.hash(newPassword, config.bcryptSaltRounds)
+		return this.usersRepository.updatePassword(user, hashedPassword)
+	}
+
+	async updateEmail(email: string, password: string, newEmail: string): Promise<User | undefined> {
+		const user = await this.validate(email, password)
+
+		if (!user) {
+			throw new NotFoundException(`Could not validate the user with email, ${email}`)
+		}
+
+		await this.usersRepository.updateEmail(user, newEmail)
+		return this.usersRepository.findUserByEmail(email)
+	}
+
+	async getAccessAndRefreshTokens(user: User): Promise<AccessPairs> {
 		if (!user) {
 			throw new UnprocessableEntityException({
 				message: 'User object is malformed'
