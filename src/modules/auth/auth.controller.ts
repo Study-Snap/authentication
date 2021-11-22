@@ -25,7 +25,11 @@ export class AuthController {
 		return this.authService.getAccessAndRefreshTokens(req.user)
 	}
 
-	@ApiResponse({ status: HttpStatus.CREATED, description: 'User account details that have been created', type: User })
+	@ApiResponse({
+		status: HttpStatus.CREATED,
+		description: 'User account details that have been created. NOTE: does not include password field even though shown',
+		type: User
+	})
 	@Post('register')
 	async register(@Body() userDto: UserCreateDto): Promise<User> {
 		return this.authService.register({
@@ -41,8 +45,14 @@ export class AuthController {
 		description: 'Provides details required to change the users password',
 		required: true
 	})
+	@ApiHeader({
+		name: 'Authorization',
+		description: 'Associated JWT authorization/access token to verify the user is logged in at the time of the request',
+		required: true
+	})
 	@ApiResponse({
-		description: 'The updated user ... NOTE: nothing visible will change since password is hidden from response.',
+		description:
+			'The updated user ... NOTE: nothing visible will change since password is hidden from response. NOTE: does not include password field even though shown',
 		status: HttpStatus.OK,
 		type: User
 	})
@@ -58,7 +68,8 @@ export class AuthController {
 	})
 	@ApiResponse({
 		status: HttpStatus.CREATED,
-		description: 'Response with new access token (`accessToken`) and refresh token (`refreshToken`)'
+		description: 'Response with new access token (`accessToken`) and refresh token (`refreshToken`)',
+		type: AccessPairs
 	})
 	@Post('refresh')
 	async refresh(@Cookies('refreshToken') token: string): Promise<AccessPairs> {
