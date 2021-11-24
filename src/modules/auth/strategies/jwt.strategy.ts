@@ -7,6 +7,9 @@ import { IConfigAttributes } from '../../../common/interfaces/config/app-config.
 
 const config: IConfigAttributes = getConfig()
 
+/**
+ * JWT Authentication strategy
+ */
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, JWT_STRATEGY) {
 	constructor() {
@@ -17,6 +20,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, JWT_STRATEGY) {
 		})
 	}
 
+	/**
+	 * Validates and retrieves stored data from the provided JWT authentication header
+	 * @param payload The JWT payload
+	 * @returns User data encoded in the JWT payload
+	 */
 	async validate(payload: any) {
 		return {
 			id: payload.sub,

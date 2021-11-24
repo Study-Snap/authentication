@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (dev): Added development ready docker-compose configuration to support future development of Authentication for StudySnap
 - (SSPP-20): Implemented some more e2e tests
 - (SSPP-20): Some functional support services for email modification
+- (SSPP-302): Added some extra documentation to classes and functions for better usability for devs
 
 ## [Released]
 

@@ -12,6 +12,9 @@ import { UsersRepository } from '../../users/users.repository'
 // Get some jwt config information
 const config: IConfigAttributes = getConfig()
 
+/**
+ * Implements refresh and access token generation and management services 
+ */
 @Injectable()
 export class TokensService {
 	constructor(
@@ -20,6 +23,11 @@ export class TokensService {
 		private readonly jwtService: JwtService
 	) {}
 
+	/**
+	 * Generates a signed JWT access token for the provided user
+	 * @param user The user who this access token is for
+	 * @returns An encoded/signed JWT access token which contains the user payload
+	 */
 	async generateAccessToken(user: User): Promise<string> {
 		// Note: Using default Sign Options from module import
 		const payload = {
@@ -30,6 +38,12 @@ export class TokensService {
 		return this.jwtService.sign(payload)
 	}
 
+	/**
+	 * Generates a refresh token with a set expire time for the specified user
+	 * @param user the user who this refresh token is for
+	 * @param expiresIn Expiration time (in seconds) for the refresh token
+	 * @returns A valid and signed refresh token which can be used to refresh access for the user specified
+	 */
 	async generateRefreshToken(user: User, expiresIn: number): Promise<string> {
 		// Remove any existing refresh token whenever we generate a new one (to limit potential for token compromise)
 		const existingToken = await this.getStoredRefreshTokenWithUser(user.id)
@@ -51,6 +65,11 @@ export class TokensService {
 		return this.jwtService.sign({}, opts)
 	}
 
+	/**
+	 * Decodes and verifies a refresh token and provides the payload information in clear-text for user data processing or access refresh
+	 * @param token A valid refresh token
+	 * @returns The JWT payload contained in the provided refresh token
+	 */
 	async decodeRefreshToken(token: string): Promise<IRefreshTokenPayload> {
 		try {
 			return this.jwtService.verify(token)
@@ -66,6 +85,11 @@ export class TokensService {
 		}
 	}
 
+	/**
+	 * Extracts a refresh token payload into a valid refresh token object containing data about the token (expire time, revoked status, etc..)
+	 * @param payload JWT payload
+	 * @returns The extracted refresh token ID from the payload
+	 */
 	async getStoredTokenFromRefreshTokenPayload(payload: IRefreshTokenPayload): Promise<RefreshToken | undefined> {
 		const tokenId = payload.jti
 
@@ -78,6 +102,11 @@ export class TokensService {
 		return this.refreshTokensRepository.findTokenById(tokenId)
 	}
 
+	/**
+	 * Resolves the user and token from the encoded string containing the encoded refresh token payload
+	 * @param encoded The encoded refresh token
+	 * @returns A valid user association and refresh token object(s)
+	 */
 	async resolveRefreshToken(encoded: string): Promise<{ user: User; token: RefreshToken }> {
 		const payload = await this.decodeRefreshToken(encoded)
 		const token = await this.getStoredTokenFromRefreshTokenPayload(payload)
@@ -108,6 +137,11 @@ export class TokensService {
 		}
 	}
 
+	/**
+	 * Gets a stored refresh token from the auth database that belongs to the specified user
+	 * @param id Unique ID of user
+	 * @returns Refresh token that belongs to the specified user
+	 */
 	async getStoredRefreshTokenWithUser(id: number): Promise<RefreshToken | undefined> {
 		return this.refreshTokensRepository.findTokenByUserId(id)
 	}
@@ -132,6 +166,11 @@ export class TokensService {
 		return res
 	}
 
+	/**
+	 * Generates a new access token from a provided encoded refresh token
+	 * @param encodedToken The encoded refresh token
+	 * @returns A new pair of access and refresh tokens with user data
+	 */
 	async createAccessTokenFromRefreshToken(
 		encodedToken: string
 	): Promise<{ accessToken: string; user: User; refreshToken: string }> {

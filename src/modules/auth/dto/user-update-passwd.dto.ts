@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsString, IsEmail, MinLength, MaxLength } from 'class-validator'
 
+/**
+ * Data transfer opject for updating a user password
+ */
 export class UserUpdatePasswdDto {
 	@ApiProperty({ description: 'The users current password to validate the change', default: 'password123' })
 	@IsString()
