@@ -16,10 +16,18 @@ import { AccessPairs } from '../types/access-pairs.type'
 
 const config: IConfigAttributes = getConfig()
 
+/**
+ * Class for all authentication service functions to be injected into modules or app
+ */
 @Injectable()
 export class AuthService {
 	constructor(private readonly usersRepository: UsersRepository, private readonly tokensService: TokensService) {}
 
+	/**
+	 * Creates/registers a user in the application database
+	 * @param data Contains firstName, lastName, email and password to register the user
+	 * @returns The created user object
+	 */
 	async register({ firstName, lastName, email, password }): Promise<User> {
 		const user = await this.usersRepository.findUserByEmail(email)
 
@@ -37,6 +45,12 @@ export class AuthService {
 		})
 	}
 
+	/**
+	 * Validates the user's email:password combination is correct and then provides their user data in the response
+	 * @param email Users email
+	 * @param password Users password
+	 * @returns The user details that match the provided credentials
+	 */
 	async validate(email: string, password: string): Promise<User> {
 		const user = await this.usersRepository.findUserByEmailForAuth(email)
 
@@ -54,6 +68,13 @@ export class AuthService {
 		return this.usersRepository.findUserByEmail(user.email)
 	}
 
+	/**
+	 * Updates a users password
+	 * @param userId The unique id for the user
+	 * @param currentPassword The users current password to validate
+	 * @param newPassword The users new password selection
+	 * @returns The updated user object (`NO PASSWORD FIELD SUPPLIED`)
+	 */
 	async updatePassword(userId: number, currentPassword: string, newPassword: string): Promise<User | undefined> {
 		const user = await this.usersRepository.findUserById(userId)
 
@@ -75,6 +96,13 @@ export class AuthService {
 		return this.usersRepository.updatePassword(user, hashedPassword)
 	}
 
+	/**
+	 * Updates a users email address associated with their account
+	 * @param email Users email address
+	 * @param password Users password
+	 * @param newEmail Users new email to set
+	 * @returns Updated user object containing the new email
+	 */
 	async updateEmail(email: string, password: string, newEmail: string): Promise<User | undefined> {
 		const user = await this.validate(email, password)
 
@@ -86,6 +114,11 @@ export class AuthService {
 		return this.usersRepository.findUserByEmail(email)
 	}
 
+	/**
+	 * Generates a unique JWT access token and refresh token pair for a specified user
+	 * @param user Unique user object for the user
+	 * @returns Valid pair of JWT access and refresh tokens which will allow stateless authentication with the app
+	 */
 	async getAccessAndRefreshTokens(user: User): Promise<AccessPairs> {
 		if (!user) {
 			throw new UnprocessableEntityException({

@@ -1,7 +1,6 @@
 import { DEVELOPMENT, PRODUCTION, TEST } from '../common/constants'
 import { IConfig } from '../common/interfaces/config/app-config.interface'
 import * as dotenv from 'dotenv'
-dotenv.config()
 
 // Import env vars from appropriate file
 switch (process.env.NODE_ENV) {
@@ -62,6 +61,10 @@ const appConfig: IConfig = {
 	}
 }
 
+/**
+ * Gets appropriate configuration for execution enviornment in any area of the app the includes this function.
+ * @returns Appropriate configuration for the execution environment
+ */
 export const getConfig = () => {
 	switch (process.env.NODE_ENV) {
 		case DEVELOPMENT:
