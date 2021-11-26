@@ -1,7 +1,6 @@
 import { DEVELOPMENT, PRODUCTION, TEST } from '../common/constants'
 import { IConfig } from '../common/interfaces/config/app-config.interface'
 import * as dotenv from 'dotenv'
-dotenv.config()
 
 // Import env vars from appropriate file
 switch (process.env.NODE_ENV) {
@@ -30,7 +29,7 @@ const appConfig: IConfig = {
 		dbDatabaseName: process.env.DB_DATABASE_NAME || 'studysnap_db',
 		dbRetryAttempts: parseInt(process.env.DB_RETRY_ATTEMPTS) || 2,
 		jwtSecret: process.env.JWT_SECRET || 'dev_secret_do_change_in_prod',
-		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '20s'
+		jwtAccessExpireTime: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME || '20m'
 	},
 	test: {
 		listenPort: process.env.PORT || 5000,
@@ -62,6 +61,10 @@ const appConfig: IConfig = {
 	}
 }
 
+/**
+ * Gets appropriate configuration for execution enviornment in any area of the app the includes this function.
+ * @returns Appropriate configuration for the execution environment
+ */
 export const getConfig = () => {
 	switch (process.env.NODE_ENV) {
 		case DEVELOPMENT:
