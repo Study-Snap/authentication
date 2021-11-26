@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (SSPP-20): Implemented some more e2e tests
 - (SSPP-20): Some functional support services for email modification
 - (SSPP-302): Added some extra documentation to classes and functions for better usability for devs
+- (SSPP-114): Implemented logging of all authentication requests from users (registration and validation of user credentials as well as updates to user data)
 
 ## [Released]
 
