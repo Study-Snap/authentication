@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [Released]
 
 ## [1.0.4]
 
@@ -17,8 +17,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - (SSPP-20): Some functional support services for email modification
 - (SSPP-302): Added some extra documentation to classes and functions for better usability for devs
 - (SSPP-114): Implemented logging of all authentication requests from users (registration and validation of user credentials as well as updates to user data)
-
-## [Released]
 
 ## [1.0.3]
 
