@@ -2,6 +2,7 @@ import {
 	BadRequestException,
 	ConflictException,
 	Injectable,
+	Logger,
 	NotFoundException,
 	UnauthorizedException,
 	UnprocessableEntityException
@@ -35,6 +36,7 @@ export class AuthService {
 		if (user) throw new ConflictException({ message: 'A user with that email already exists' })
 
 		// Hash password for storage
+		Logger.log(`Creating account with email: ${email}`)
 		const hashedPassword = await bcrypt.hash(password, config.bcryptSaltRounds)
 		password = hashedPassword
 		return this.usersRepository.createUser({
@@ -65,6 +67,7 @@ export class AuthService {
 			})
 		}
 
+		Logger.log(`User logged successfully: ${email}`)
 		return this.usersRepository.findUserByEmail(user.email)
 	}
 
@@ -92,6 +95,7 @@ export class AuthService {
 		}
 
 		// Hash and update password
+		Logger.log(`Updating password for user: ${user.email}`)
 		const hashedPassword = await bcrypt.hash(newPassword, config.bcryptSaltRounds)
 		return this.usersRepository.updatePassword(user, hashedPassword)
 	}
@@ -110,6 +114,7 @@ export class AuthService {
 			throw new NotFoundException(`Could not validate the user with email, ${email}`)
 		}
 
+		Logger.log(`Updating email for user: ${user.email}`)
 		await this.usersRepository.updateEmail(user, newEmail)
 		return this.usersRepository.findUserByEmail(email)
 	}
